@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.justalk_2.mvvm.ChatAppViewModel" />
+    </data>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.ChatFragment"
+    android:background="@color/background_color">
+
+
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/toolBarChat"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?attr/colorPrimary"-->
+<!--        android:minHeight="?attr/actionBarSize"-->
+<!--        android:theme="@style/ActionBarTheme"-->
+<!--        app:popupTheme="@style/optionMenuText"-->
+<!--        app:titleTextColor="@color/main_text_color">-->
+
+
+<!--        <ImageView-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:src="@drawable/arrow_back_icon"-->
+<!--            android:id="@+id/chatBackBtn"-->
+<!--            android:layout_marginEnd="10dp"/>-->
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="5dp"-->
+<!--            android:orientation="horizontal">-->
+
+
+
+<!--            <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                android:layout_width="60dp"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:src="@drawable/person_icon"-->
+<!--                app:civ_border_width="2dp"-->
+<!--                app:civ_border_color="@color/white"-->
+<!--                android:id="@+id/chatImageViewUser"/>-->
+
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="User name"-->
+<!--                android:textSize="18sp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:id="@+id/chatUserName" />-->
+
+
+
+<!--        </LinearLayout>-->
+
+
+
+
+<!--    </androidx.appcompat.widget.Toolbar>-->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Online"-->
+<!--        android:textSize="16sp"-->
+<!--        android:layout_marginTop="37dp"-->
+<!--        android:layout_marginLeft="131dp"-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:id="@+id/chatUserStatus"/>-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messagesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_above="@id/layoutChatbox"
+        android:layout_marginBottom="10dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/layoutChatbox"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:background="@color/background_color"
+        android:minHeight="48dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_message_chat_log"
+            style="@style/ThemeOverlay.Material3.TextInputEditText.FilledBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="@dimen/elevation"
+            android:textColorHint="@color/primary_color"
+            android:theme="@style/EditTextThemeOverlay"
+            app:boxBackgroundColor="@color/white"
+            app:boxCornerRadiusBottomEnd="@dimen/corner_radius_messgae"
+            app:boxCornerRadiusBottomStart="@dimen/corner_radius_messgae"
+            app:boxCornerRadiusTopEnd="@dimen/corner_radius_messgae"
+            app:boxCornerRadiusTopStart="@dimen/corner_radius_messgae"
+            app:boxStrokeColor="@color/primary_color"
+            app:boxStrokeWidth="0dp"
+            app:endIconMode="clear_text"
+            app:helperTextTextAppearance="@color/primary_color"
+            app:hintTextAppearance="@color/hint_text_color"
+            app:hintTextColor="@color/hint_text_color"
+            app:startIconTint="@color/hint_text_color"
+            android:layout_weight="1.9">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/message_hint"
+                android:text="@={viewModel.message}"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_send_chat_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Send"
+            android:layout_weight="0.1"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
+</layout>

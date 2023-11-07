@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="headline1">24sp</dimen>
+    <dimen name="headline2">20sp</dimen>
+    <dimen name="headline3">18sp</dimen>
+
+    <dimen name="body_content">16sp</dimen>
+    <dimen name="body_content_2">14sp</dimen>
+
+    <dimen name="caption">12sp</dimen>
+
+
+    <dimen name="margin_top">10dp</dimen>
+    <dimen name="margin_bottom">10dp</dimen>
+    <dimen name="margin_start">5dp</dimen>
+    <dimen name="margin_end">5dp</dimen>
+
+    <dimen name="padding_top">3dp</dimen>
+    <dimen name="padding_bottom">3dp</dimen>
+    <dimen name="padding_start">3dp</dimen>
+    <dimen name="padding_end">3dp</dimen>
+
+    <dimen name="corner_radius_item">30dp</dimen>
+    <dimen name="corner_radius">50dp</dimen>
+    <dimen name="corner_radius_messgae">10dp</dimen>
+    <dimen name="elevation">20dp</dimen>
+
+    <dimen name="activityPadding">16dp</dimen>
+    <dimen name="placeholderImage">60dp</dimen>
+    <dimen name="placeholderTextHeight">8dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+
+</resources>

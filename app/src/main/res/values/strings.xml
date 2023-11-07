@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">JusTalk</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- welcome messages-->
+    <string name="hello_again">Hello Again</string>
+    <string name="welcome_message">Welcome back to JusTalk!</string>
+    <string name="register_welcome">Welcome to JusTalk</string>
+    <string name="register_wel_msg">Let\'s get you started right now!</string>
+
+    <!-- text in authentication-->
+    <string name="forget_pass">Forget Password?</string>
+    <string name="dont_hava_acc">Don\'t have an account?</string>
+    <string name="hava_acc">Already have an account?</string>
+
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+
+    <!-- auth hint-->
+    <string name="username_hint">Username</string>
+    <string name="email_hint">Email</string>
+    <string name="pass_hint">Password</string>
+
+    <!-- buttons-->
+    <string name="btn_login">Login</string>
+    <string name="btn_register">Sign Up</string>
+
+    <!--   drawer-->
+    <string name="open_drawer">Open Drawer</string>
+    <string name="close_drawer">Close Drawer</string>
+
+    <!--   options menu-->
+    <string name="menu_settings">Settings</string>
+    <string name="menu_logout">Log out</string>
+
+    <!--  Titles for Action bar-->
+    <string name="title_chats">Chats</string>
+    <string name="title_calls">Calls</string>
+    <string name="title_settings">Settings</string>
+
+    <!--  message hint -->
+    <string name="message_hint">Type your message...</string>
+    <string name="update_profile_hint">Enter your new username...</string>
+</resources>

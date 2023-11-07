@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpActivity"
+    android:background="@color/background_color"
+    tools:ignore="HardcodedText">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/btn_upload_img_register"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="32dp"
+        android:textAllCaps="false"
+        android:textColor="@color/hint_text_color"
+        android:background="@drawable/upload_img_btn"
+        android:src="@drawable/person_icon"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_wel_msg_register"/>
+
+
+    <TextView
+        android:id="@+id/tv_welcome_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="@string/register_welcome"
+        android:textSize="@dimen/headline1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_wel_msg_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/register_wel_msg"
+        android:textSize="@dimen/headline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_welcome_register" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_username_register"
+        style="@style/ThemeOverlay.Material3.TextInputEditText.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:elevation="@dimen/elevation"
+        android:textColorHint="@color/primary_color"
+        android:theme="@style/EditTextThemeOverlay"
+        app:boxBackgroundColor="@color/white"
+        app:boxCornerRadiusBottomEnd="@dimen/corner_radius"
+        app:boxCornerRadiusBottomStart="@dimen/corner_radius"
+        app:boxCornerRadiusTopEnd="@dimen/corner_radius"
+        app:boxCornerRadiusTopStart="@dimen/corner_radius"
+        app:boxStrokeColor="@color/primary_color"
+        app:boxStrokeWidth="0dp"
+        app:endIconMode="clear_text"
+        app:helperTextTextAppearance="@color/primary_color"
+        app:hintTextAppearance="@color/hint_text_color"
+        app:hintTextColor="@color/hint_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_upload_img_register"
+        app:startIconDrawable="@drawable/person_icon"
+        app:startIconTint="@color/hint_text_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username_hint"
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            android:isScrollContainer="false"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_email_register"
+        style="@style/ThemeOverlay.Material3.TextInputEditText.FilledBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:elevation="@dimen/elevation"
+        android:textColorHint="@color/primary_color"
+        android:theme="@style/EditTextThemeOverlay"
+        app:boxBackgroundColor="@color/white"
+        app:boxCornerRadiusBottomEnd="@dimen/corner_radius"
+        app:boxCornerRadiusBottomStart="@dimen/corner_radius"
+        app:boxCornerRadiusTopEnd="@dimen/corner_radius"
+        app:boxCornerRadiusTopStart="@dimen/corner_radius"
+        app:boxStrokeColor="@color/primary_color"
+        app:boxStrokeWidth="0dp"
+        app:endIconMode="clear_text"
+        app:helperTextTextAppearance="@color/primary_color"
+        app:hintTextAppearance="@color/hint_text_color"
+        app:hintTextColor="@color/hint_text_color"
+        app:layout_constraintEnd_toEndOf="@+id/et_username_register"
+        app:layout_constraintStart_toStartOf="@+id/et_username_register"
+        app:layout_constraintTop_toBottomOf="@+id/et_username_register"
+        app:startIconDrawable="@drawable/email_icon"
+        app:startIconTint="@color/hint_text_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email_hint"
+            android:inputType="textEmailAddress"
+            android:imeOptions="actionNext"
+            android:isScrollContainer="false"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_pass_register"
+        style="@style/ThemeOverlay.Material3.TextInputEditText.FilledBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:elevation="@dimen/elevation"
+        android:textColorHint="@color/primary_color"
+        android:theme="@style/EditTextThemeOverlay"
+        app:boxBackgroundColor="@color/white"
+        app:boxCornerRadiusBottomEnd="@dimen/corner_radius"
+        app:boxCornerRadiusBottomStart="@dimen/corner_radius"
+        app:boxCornerRadiusTopEnd="@dimen/corner_radius"
+        app:boxCornerRadiusTopStart="@dimen/corner_radius"
+        app:boxStrokeColor="@color/primary_color"
+        app:boxStrokeWidth="0dp"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/hint_text_color"
+        app:helperTextTextAppearance="@color/primary_color"
+        app:hintTextAppearance="@color/hint_text_color"
+        app:hintTextColor="@color/hint_text_color"
+        app:layout_constraintEnd_toEndOf="@+id/et_username_register"
+        app:layout_constraintStart_toStartOf="@+id/et_username_register"
+        app:layout_constraintTop_toBottomOf="@+id/et_email_register"
+        app:startIconDrawable="@drawable/password_key_icon"
+        app:startIconTint="@color/hint_text_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/pass_hint"
+            android:inputType="textPassword"
+            android:imeOptions="actionNext"
+            android:isScrollContainer="false"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_register_register"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/button_color"
+        android:text="@string/btn_register"
+        app:layout_constraintEnd_toEndOf="@+id/et_username_register"
+        app:layout_constraintStart_toStartOf="@+id/et_username_register"
+        app:layout_constraintTop_toBottomOf="@+id/et_pass_register" />
+
+    <TextView
+        android:id="@+id/tv_have_acc_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/hava_acc"
+        app:layout_constraintEnd_toStartOf="@+id/tv_login_register"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register_register" />
+
+    <TextView
+        android:id="@+id/tv_login_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/login"
+        android:textColor="@color/primary_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_have_acc_register"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register_register" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

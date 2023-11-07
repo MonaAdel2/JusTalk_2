@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.justalk_2.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatFromHomeFragment"
+            app:destination="@id/chatFromHomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.justalk_2.fragments.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" >
+        <action
+            android:id="@+id/action_chatFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="User"
+            app:argType="com.example.justalk_2.model.User" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.justalk_2.fragments.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFromHomeFragment"
+        android:name="com.example.justalk_2.fragments.ChatFromHomeFragment"
+        android:label="fragment_chat_from_home"
+        tools:layout="@layout/fragment_chat_from_home" >
+        <action
+            android:id="@+id/action_chatFromHomeFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="recentCahts"
+            app:argType="com.example.justalk_2.model.RecentChats" />
+    </fragment>
+</navigation>

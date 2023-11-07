@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.justalk_2.mvvm.ChatAppViewModel" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ChatFromHomeFragment"
+    android:background="@color/background_color">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".fragments.ChatFragment"
+        android:background="@color/background_color">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/messagesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_above="@id/layoutChatbox"
+            android:layout_marginBottom="10dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/layoutChatbox"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:background="@color/background_color"
+            android:minHeight="48dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_message_chat_log"
+                style="@style/ThemeOverlay.Material3.TextInputEditText.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:elevation="@dimen/elevation"
+                android:textColorHint="@color/primary_color"
+                android:theme="@style/EditTextThemeOverlay"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusBottomEnd="@dimen/corner_radius_messgae"
+                app:boxCornerRadiusBottomStart="@dimen/corner_radius_messgae"
+                app:boxCornerRadiusTopEnd="@dimen/corner_radius_messgae"
+                app:boxCornerRadiusTopStart="@dimen/corner_radius_messgae"
+                app:boxStrokeColor="@color/primary_color"
+                app:boxStrokeWidth="0dp"
+                app:endIconMode="clear_text"
+                app:helperTextTextAppearance="@color/primary_color"
+                app:hintTextAppearance="@color/hint_text_color"
+                app:hintTextColor="@color/hint_text_color"
+                app:startIconTint="@color/hint_text_color"
+                android:layout_weight="1.9">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/message_hint"
+                    android:text="@={viewModel.message}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_send_chat_log"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Send"
+                android:layout_weight="0.1"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </layout>
