@@ -1,6 +1,7 @@
 package com.example.justalk_2.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,6 @@ import com.example.justalk_2.MainActivity
 import com.example.justalk_2.R
 import com.example.justalk_2.Utils
 import com.example.justalk_2.adapters.MessageAdapter
-import com.example.justalk_2.databinding.FragmentChatBinding
 import com.example.justalk_2.databinding.FragmentChatFromHomeBinding
 import com.example.justalk_2.model.Message
 import com.example.justalk_2.mvvm.ChatAppViewModel
@@ -61,6 +61,8 @@ class ChatFromHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.progressBarChat2.visibility = View.VISIBLE
+
         userViewModel = ViewModelProvider(this).get(ChatAppViewModel::class.java)
 
         binding.viewModel = userViewModel
@@ -84,13 +86,14 @@ class ChatFromHomeFragment : Fragment() {
 
         binding.btnSendChatLog.setOnClickListener {
             userViewModel.sendMessage(
-                Utils.getUiLoggedIn(),
+                Utils.getUidLoggedIn(),
                 args.recentCahts.friendId!!,
                 args.recentCahts.name!!,
                 args.recentCahts.friendsImage!!)
         }
 
         userViewModel.getMessages(args.recentCahts.friendId!!).observe(viewLifecycleOwner, Observer {
+            binding.progressBarChat2.visibility = View.GONE
             initRecyclerView(it)
         })
 
@@ -120,6 +123,7 @@ class ChatFromHomeFragment : Fragment() {
     private fun setToolbarData(){
         tvToolbarUsername.text = args.recentCahts.name
         tvToolbarStatus.text = args.recentCahts.status
+        Log.d("ChatFromHomeFragment", "setToolbarData: ${args.recentCahts.status} and ${args.recentCahts.name}")
         Glide.with(requireActivity()).load(args.recentCahts.friendsImage).into(imgUserProfile)
     }
 

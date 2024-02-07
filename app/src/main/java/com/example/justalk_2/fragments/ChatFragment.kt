@@ -2,6 +2,7 @@ package com.example.justalk_2.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,19 +10,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.bumptech.glide.Glide
 import com.example.justalk_2.MainActivity
 import com.example.justalk_2.R
 import com.example.justalk_2.Utils
 import com.example.justalk_2.adapters.MessageAdapter
 import com.example.justalk_2.databinding.FragmentChatBinding
-import com.example.justalk_2.databinding.FragmentHomeBinding
 import com.example.justalk_2.model.Message
 import com.example.justalk_2.mvvm.ChatAppViewModel
 import de.hdodenhof.circleimageview.CircleImageView
@@ -63,6 +63,8 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.progressBarChat1.visibility = View.VISIBLE
+
         userViewModel = ViewModelProvider(this).get(ChatAppViewModel::class.java)
 
         binding.viewModel = userViewModel
@@ -85,14 +87,14 @@ class ChatFragment : Fragment() {
         }
 
         binding.btnSendChatLog.setOnClickListener {
-            userViewModel.sendMessage(Utils.getUiLoggedIn(),
+            userViewModel.sendMessage(Utils.getUidLoggedIn(),
                                         args.User.userUid!!,
                                         args.User.username!!,
                                         args.User.imageUrl!!)
         }
 
         userViewModel.getMessages(args.User.userUid!!).observe(viewLifecycleOwner, Observer {
-            
+            binding.progressBarChat1.visibility = View.GONE
             initRecyclerView(it)
 
         })
@@ -123,6 +125,12 @@ class ChatFragment : Fragment() {
     private fun setToolbarData(){
         tvToolbarUsername.text = args.User.username
         tvToolbarStatus.text = args.User.status
+        Log.d("ChatFragment", "setToolbarData: ${args.User.status} and ${args.User.username}")
+        if(args.User.status == "Online"){
+            imgUserProfile.borderColor = ContextCompat.getColor(requireContext(), R.color.online_status)
+        }else{
+            imgUserProfile.borderColor = ContextCompat.getColor(requireContext(), R.color.offline_status)
+        }
         Glide.with(requireActivity()).load(args.User.imageUrl).into(imgUserProfile)
     }
 

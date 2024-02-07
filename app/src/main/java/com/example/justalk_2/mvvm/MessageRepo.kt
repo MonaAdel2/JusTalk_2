@@ -15,10 +15,10 @@ class MessageRepo {
 
         val messages = MutableLiveData<List<Message>>()
 
-        val uniqueId = listOf(Utils.getUiLoggedIn(), friendId).sorted()
+        val uniqueId = listOf(Utils.getUidLoggedIn(), friendId).sorted()
         uniqueId.joinToString(separator = "")
 
-        firestore.collection("messages").document(uniqueId.toString()).collection("chats").orderBy("time", Query.Direction.ASCENDING)
+        firestore.collection("Messages").document(uniqueId.toString()).collection("Chats").orderBy("time", Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, exception ->
 
                 if (exception != null) {
@@ -31,8 +31,8 @@ class MessageRepo {
                     snapshot.documents.forEach { document ->
                         val messageModel = document.toObject(Message::class.java)
 
-                        if (messageModel!!.sender.equals(Utils.getUiLoggedIn()) && messageModel.receiver.equals(friendId) ||
-                            messageModel.sender.equals(friendId) && messageModel.receiver.equals(Utils.getUiLoggedIn())
+                        if (messageModel!!.sender.equals(Utils.getUidLoggedIn()) && messageModel.receiver.equals(friendId) ||
+                            messageModel.sender.equals(friendId) && messageModel.receiver.equals(Utils.getUidLoggedIn())
                         ) {
                             messageModel.let {
                                 messagesList.add(it!!)

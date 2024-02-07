@@ -83,6 +83,16 @@
 
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/progressBar_chat_2"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:progressTint="@color/black"
+            android:progressTintMode="src_over"
+            android:translationZ="50dp"
+            android:visibility="gone"
+            android:layout_centerInParent="true"/>
+
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

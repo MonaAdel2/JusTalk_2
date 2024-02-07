@@ -1,9 +1,9 @@
 package com.example.justalk_2
 
 import com.google.firebase.auth.FirebaseAuth
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 class Utils {
     companion object{
@@ -14,7 +14,7 @@ class Utils {
         const val REQUEST_IMAGE_PICK = 2
 
 
-        fun getUiLoggedIn(): String{
+        fun getUidLoggedIn(): String{
 
             if(auth.currentUser != null){
                 userId = auth.currentUser!!.uid
@@ -23,19 +23,10 @@ class Utils {
             return userId
         }
 
-//        fun getTime(): String {
-//            val formatter = SimpleDateFormat("HH:mm:ss")
-//            val date = Date(System.currentTimeMillis())
-//            val strDate = formatter.format(date)
-//
-//            return strDate
-//        }
-
         fun getTime(): String {
-            val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val date = Date(System.currentTimeMillis())
-            val strDateTime = formatter.format(date)
-            return strDateTime
+            val dateFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+            val currentTime = Date()
+            return dateFormat.format(currentTime)
         }
 
 

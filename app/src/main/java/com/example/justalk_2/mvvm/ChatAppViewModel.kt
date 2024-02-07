@@ -1,5 +1,6 @@
 package com.example.justalk_2.mvvm
 
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,20 +12,26 @@ import com.example.justalk_2.Utils
 import com.example.justalk_2.model.Message
 import com.example.justalk_2.model.RecentChats
 import com.example.justalk_2.model.User
+import com.example.justalk_2.notifications.entity.NotificationData
+import com.example.justalk_2.notifications.entity.PushNotification
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.example.justalk_2.notifications.entity.Token
+import com.example.justalk_2.notifications.network.RetrofitInstance
 
 class ChatAppViewModel: ViewModel() {
+    private val TAG = "ChatAppViewModel"
     val name = MutableLiveData<String>()
     val imageUrl = MutableLiveData<String>()
     val message = MutableLiveData<String>()
 
-    private val firesore = FirebaseFirestore.getInstance()
+    private val firestore = FirebaseFirestore.getInstance()
 
     val usersRepo = UsersRepo()
     val messageRepo = MessageRepo()
     val recentChatRepo = ChatListRepo()
+    var token: String? = null
 
     init {
         getCurrentUser()
@@ -39,7 +46,8 @@ class ChatAppViewModel: ViewModel() {
 
         val context = MyApplication.instance.applicationContext
 
-        firesore.collection("users").document(Utils.getUiLoggedIn()).addSnapshotListener{value, error->
+        Log.d(TAG, "getCurrentUser: current user: ${Utils.getUidLoggedIn()}")
+        firestore.collection("Users").document(Utils.getUidLoggedIn()).addSnapshotListener{ value, error->
             if(value!!.exists() && value != null){
                 val user = value.toObject(User::class.java)
                 name.value = user?.username!!
@@ -74,29 +82,60 @@ class ChatAppViewModel: ViewModel() {
         mySharedPrefs.setValue("friendImage", friendImage)
 
 
-        firesore.collection("messages").document(uniqueID.toString())
-            .collection("chats").document(Utils.getTime())
+        firestore.collection("Messages").document(uniqueID.toString())
+            .collection("Chats").document(Utils.getTime())
             .set(hashmap).addOnCompleteListener { task->
 
                 val hashmapForRecent = hashMapOf<String, Any>(
                     "friendId" to receiver,
                     "time" to Utils.getTime(),
-                    "sender" to Utils.getUiLoggedIn(),
+                    "sender" to Utils.getUidLoggedIn(),
                     "message" to message.value!!,
                     "friendsImage" to friendImage,
                     "name" to friendName,
                     "person" to "you"
                 )
 
-                firesore.collection("Conversations${Utils.getUiLoggedIn()}").document(receiver).set(hashmapForRecent)
-                firesore.collection("Conversations${receiver}").document(Utils.getUiLoggedIn())
-                    .update("message", message.value!!, "time", Utils.getTime(), "person", name.value!!)
+                firestore.collection("Conversation${Utils.getUidLoggedIn()}").document(receiver).set(hashmapForRecent)
+                firestore.collection("Conversation${receiver}").document(Utils.getUidLoggedIn())
+                    .update("message", message.value!!,
+                        "time",
+                        Utils.getTime(), "person", name.value!!)
 
-                // to clear the edit text after pressing send
-                if(task.isSuccessful){
-                    message.value = ""
+                // for notification
+                firestore.collection("Tokens").document(receiver).addSnapshotListener { value, error ->
+                    if (value != null && value.exists()){
+                        val tokenObject = value.toObject(Token::class.java)
+                        token = tokenObject?.token!!
+
+                        val loggedUserName = mySharedPrefs.getValue("username")!!.split("\\s".toRegex())[0]
+                        if (message.value!!.isNotEmpty() && receiver.isNotEmpty()){
+                            PushNotification(NotificationData(loggedUserName, message.value!!), token!!).also{
+                                sendNotification(it)
+                                Log.d(TAG, "sendMessage: Notification sent")
+                            }
+                        }else{
+                            Log.d(TAG, "sendMessage: No token, no notification")
+                            Log.d(TAG, "sendMessage: $token")
+                        }
+
+                    }
+                    // to clear the edit text after pressing send
+                    if(task.isSuccessful){
+                        message.value = ""
+                    }
                 }
+
             }
+    }
+
+    private fun sendNotification(notification: PushNotification) = viewModelScope.launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            
+        }catch (e: Exception){
+            Log.d(TAG, "sendNotification: ${e.message}")
+        }
     }
 
     fun getMessages(friendId: String): LiveData<List<Message>>{
@@ -112,7 +151,7 @@ class ChatAppViewModel: ViewModel() {
         val hashmapUser = hashMapOf<String, Any>("username" to name.value!!,
                                                 "imageUrl" to imageUrl.value!!)
 
-        firesore.collection("users").document(Utils.getUiLoggedIn()).update(hashmapUser).addOnCompleteListener { task ->
+        firestore.collection("Users").document(Utils.getUidLoggedIn()).update(hashmapUser).addOnCompleteListener { task ->
             if (task.isSuccessful){
                 Toast.makeText(context, "Profile is updated", Toast.LENGTH_SHORT).show()
 
@@ -125,9 +164,9 @@ class ChatAppViewModel: ViewModel() {
         val hashmapUpdated = hashMapOf<String, Any>("friendsImage" to imageUrl.value!!,
             "name" to name.value!!, "person" to name.value!!)
 
-        firesore.collection("Conversations${friendID}").document(Utils.getUiLoggedIn()).update(hashmapUpdated)
+        firestore.collection("Conversation$friendID").document(Utils.getUidLoggedIn()).update(hashmapUpdated)
 
-        firesore.collection("Conversations${Utils.getUiLoggedIn()}").document(friendID!!).update("person", "you")
+        firestore.collection("Conversation${Utils.getUidLoggedIn()}").document(friendID!!).update("person", "you")
 
     }
 

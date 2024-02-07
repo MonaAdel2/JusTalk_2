@@ -9,6 +9,9 @@ import com.bumptech.glide.Glide
 import com.example.justalk_2.R
 import com.example.justalk_2.model.RecentChats
 import de.hdodenhof.circleimageview.CircleImageView
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class RecentChatsAdapter: RecyclerView.Adapter<RecentChatsViewHolder>() {
 
@@ -28,15 +31,25 @@ class RecentChatsAdapter: RecyclerView.Adapter<RecentChatsViewHolder>() {
         val recentChatsList = recentChatsList[position]
         recentChats = recentChatsList
 
+        val fullName = recentChatsList.person
+        val firstName = fullName?.split(" ")?.get(0)
+
         holder.tvFriendName.text = recentChatsList.name
 
         // to display only a few words of the message.
         val messagePart = recentChatsList.message!!.split(" ").take(4).joinToString(" ")
-        val makeLastMessage = "${recentChatsList.person}: ${messagePart} "
+        val makeLastMessage = "${firstName}: ${messagePart} "
         holder.tvMessage.text = makeLastMessage
 
         Glide.with(holder.itemView.context).load(recentChatsList.friendsImage).placeholder(R.drawable.person_icon).into(holder.imgFriend)
-        holder.tvTime.text = recentChatsList.time!!.substring(0,5)
+
+        // time of the message
+        val dayOfMessage = checkIfToday(recentChatsList.time!!)
+        val timeFormatted = formatTime(recentChatsList.time!!)
+        val timeIn12Format = changeTimeInto12Hour(timeFormatted)
+//        holder.tvTime.text = timeFormatted
+//        holder.tvTime.text = timeIn12Format
+        holder.tvTime.text = dayOfMessage
 
         holder.itemView.setOnClickListener {
             listener?.getOnRecentChatClicked(position, recentChatsList)
@@ -50,6 +63,54 @@ class RecentChatsAdapter: RecyclerView.Adapter<RecentChatsViewHolder>() {
     fun setRecentChatList(list: List<RecentChats>){
         this.recentChatsList = list
     }
+
+    private fun formatTime(inputTime: String): String {
+        val formattedTime = StringBuilder(inputTime)
+        formattedTime.insert(11, ":")
+        return formattedTime.substring(9, 14)
+    }
+
+    private fun changeTimeInto12Hour(inputTime: String): String{
+        var finalTime = ""
+        var hours = inputTime.split(":")
+        if(hours[0].toInt() > 12){
+            finalTime = (hours[0].toInt()-12).toString() + ":" + hours[1] + " PM"
+        }else{
+            finalTime = inputTime + " AM"
+        }
+        return finalTime
+    }
+
+    private fun checkIfToday(dateTimeString: String): String {
+        val inputFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+        val date = inputFormat.parse(dateTimeString)
+
+        val calendar = Calendar.getInstance()
+        val todayYear = calendar.get(Calendar.YEAR)
+        val todayWeek = calendar.get(Calendar.WEEK_OF_YEAR)
+        val today = calendar.get(Calendar.DAY_OF_MONTH)
+
+        calendar.time = date
+        val dateYear = calendar.get(Calendar.YEAR)
+        val dateWeek = calendar.get(Calendar.WEEK_OF_YEAR)
+
+        val dateTimeFormat = if (todayYear == dateYear) {
+            if (todayWeek == dateWeek) {
+                if(today == calendar.get(Calendar.DAY_OF_MONTH)){
+                    SimpleDateFormat("hh:mm a", Locale.getDefault())
+                }else{
+                    SimpleDateFormat("EEE hh:mm a", Locale.getDefault())
+                }
+            } else {
+                SimpleDateFormat("MMM dd hh:mm a", Locale.getDefault())
+            }
+        } else {
+            SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault())
+        }
+
+        return dateTimeFormat.format(date)
+    }
+
 
 }
 
