@@ -2,6 +2,7 @@ package com.example.justalk_2.fragments
 
 import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 
 class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked{
+    private val TAG = "HomeFragment"
 
     lateinit var recyclerFriends: RecyclerView
     lateinit var userAdapter: UsersAdapter
@@ -47,8 +49,6 @@ class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked{
 
     lateinit var recentChatsAdapter: RecentChatsAdapter
 
-    lateinit var auth : FirebaseAuth
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,6 +63,8 @@ class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.progressBarHome.visibility = View.VISIBLE
+//        activity_.viewShaded.visibility = View.VISIBLE
         userViewModel = ViewModelProvider(this).get(ChatAppViewModel::class.java)
 
         userAdapter = UsersAdapter()
@@ -86,6 +88,8 @@ class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked{
         recyclerFriends.layoutManager = layoutManager
 
         userViewModel.getUsers().observe(viewLifecycleOwner, Observer {
+            binding.progressBarHome.visibility = View.GONE
+//            activity_.viewShaded.visibility = View.GONE
             userAdapter.setList(it)
             recyclerFriends.adapter = userAdapter
         })
@@ -94,9 +98,12 @@ class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked{
         recentChatsAdapter = RecentChatsAdapter()
 
         userViewModel.getRecentChat().observe(viewLifecycleOwner, Observer{
+            binding.progressBarHome.visibility = View.GONE
+//            activity_.viewShaded.visibility = View.GONE
             binding.rvChatsHomeFrg.layoutManager = LinearLayoutManager(activity)
             recentChatsAdapter.setRecentChatList(it)
             binding.rvChatsHomeFrg.adapter = recentChatsAdapter
+            checkRecentChatsNumber(it)
         })
 
         recentChatsAdapter.setOnRecentChatsListener(this)
@@ -109,6 +116,13 @@ class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked{
         tvToolbarStatus.visibility = View.GONE
         imgBackBtn.visibility = View.GONE
         tvToolbarTitle.visibility = View.VISIBLE
+    }
+    private fun checkRecentChatsNumber(chatsList: List<RecentChats>){
+        if (chatsList.isEmpty()){
+            binding.tvNoRecentChats.visibility = View.VISIBLE
+        }else{
+            binding.tvNoRecentChats.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

@@ -38,6 +38,7 @@
         android:text="Friend Name"
         android:textColor="@color/black"
         android:textSize="@dimen/headline3"
+        android:fontFamily="@font/roboto_medium"
         app:layout_constraintEnd_toStartOf="@+id/tv_time_recent_chat_item"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"

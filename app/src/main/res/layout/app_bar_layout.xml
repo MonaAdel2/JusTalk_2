@@ -64,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Online"
+                    android:text="Offline"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/tv_username_chat_toolbar"
@@ -81,6 +81,7 @@
                     android:text="Username"
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/headline2"
+                    android:fontFamily="@font/roboto_medium"
                     app:layout_constraintBottom_toTopOf="@+id/tv_user_status_chat_toolbar"
                     app:layout_constraintStart_toEndOf="@+id/img_user_chat_toolbar"
                     app:layout_constraintTop_toTopOf="parent" />

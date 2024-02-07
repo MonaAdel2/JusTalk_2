@@ -13,7 +13,7 @@ class UsersRepo {
     fun getUsers(): LiveData<List<User>>{
         val users = MutableLiveData<List<User>>()
 
-        firestore.collection("users").addSnapshotListener{snapshot, exception->
+        firestore.collection("Users").addSnapshotListener{snapshot, exception->
             if(exception!= null){
                 return@addSnapshotListener
             }
@@ -25,7 +25,7 @@ class UsersRepo {
                 val user = document.toObject(User::class.java)
 
                 // skip the current user from being displayed
-                if(user!!.userUid != Utils.getUiLoggedIn()){
+                if(user!!.userUid != Utils.getUidLoggedIn()){
                     user.let{
                         usersList.add(it)
                     }

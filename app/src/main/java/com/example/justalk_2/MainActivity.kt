@@ -1,13 +1,14 @@
 package com.example.justalk_2
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.drawable.DrawableWrapper
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -20,6 +21,8 @@ import com.example.justalk_2.model.User
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.installations.FirebaseInstallations
+import com.google.firebase.messaging.FirebaseMessaging
 import de.hdodenhof.circleimageview.CircleImageView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NavigationViewController {
@@ -34,6 +37,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var tvUsername:TextView
     private var username: String? = null
     lateinit var imgProfile: CircleImageView
+    lateinit var viewShaded: View
+    private var token = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +49,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        viewShaded = findViewById(R.id.shadeView_main)
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
@@ -63,18 +70,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         createDrawerLayout()
         addUserDataToNavigationDrawer()
+        generateToken()
+
+        imgProfile.setOnClickListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            openImageProfile()
+        }
 
     }
 
     private fun addUserDataToNavigationDrawer() {
-        firestore.collection("users").addSnapshotListener{snapshot, exception->
+        firestore.collection("Users").addSnapshotListener{snapshot, exception->
             if(exception!= null){
                 return@addSnapshotListener
             }
             snapshot?.documents?.forEach {document ->
                 val user = document.toObject(User::class.java)
                 // get the current user document
-                if(user!!.userUid == Utils.getUiLoggedIn()){
+                if(user!!.userUid == Utils.getUidLoggedIn()){
                     username = user.username
                     tvUsername.text = username
                     Glide.with(this).load(user.imageUrl).into(imgProfile)
@@ -110,12 +123,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.action_setting->{
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
                 goToSettings()
                 drawerLayout.closeDrawer(GravityCompat.START)
                 return true
             }
             R.id.action_logout->{
+                if (auth.currentUser != null){
+                    firestore.collection("Users").document(Utils.getUidLoggedIn()).update("status", "Offline")
+                }
                 logout()
                 drawerLayout.closeDrawer(GravityCompat.START)
                 return true
@@ -126,7 +141,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun logout() {
         auth.signOut()
-        startActivity(Intent(this, SignInActivity::class.java))
+        startActivity(Intent(this, AuthActivity::class.java))
         finish()
     }
 
@@ -141,5 +156,52 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun setDrawerUnlocked() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+    }
+
+    private fun generateToken(){
+        val firebaseInstance = FirebaseInstallations.getInstance()
+        firebaseInstance.id.addOnSuccessListener {installationID->
+            FirebaseMessaging.getInstance().token.addOnSuccessListener {retrivedToken->
+                token = retrivedToken
+                val hashmap = hashMapOf<String, Any>("token" to token)
+                firestore.collection("Tokens").document(Utils.getUidLoggedIn()).set(hashmap).addOnSuccessListener {
+
+                }
+
+            }
+
+        }
+    }
+
+    private fun openImageProfile(){
+        navController.navigate(R.id.imageProfileViewFragment)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (auth.currentUser != null){
+            firestore.collection("Users").document(Utils.getUidLoggedIn()).update("status", "Offline")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (auth.currentUser != null){
+            firestore.collection("Users").document(Utils.getUidLoggedIn()).update("status", "Online")
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (auth.currentUser != null){
+            firestore.collection("Users").document(Utils.getUidLoggedIn()).update("status", "Online")
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (auth.currentUser != null){
+            firestore.collection("Users").document(Utils.getUidLoggedIn()).update("status", "Offline")
+        }
     }
 }

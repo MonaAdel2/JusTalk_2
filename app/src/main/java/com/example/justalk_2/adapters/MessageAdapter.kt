@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.justalk_2.R
 import com.example.justalk_2.Utils
 import com.example.justalk_2.model.Message
 import com.google.firebase.firestore.FirebaseFirestore
 import de.hdodenhof.circleimageview.CircleImageView
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class MessageAdapter(): RecyclerView.Adapter<myViewHolder>() {
 
@@ -44,20 +46,24 @@ class MessageAdapter(): RecyclerView.Adapter<myViewHolder>() {
         holder.time.visibility = View.VISIBLE
 
         holder.message.text = message.message
-        holder.time.text = message.time?.substring(0,5)?: ""
-//        holder.time.text = message.time?.substring(11,16)?: ""
+        val dayOfMessage = checkIfToday(message.time!!)
+        val timeFormatted = formatTime(message.time!!)
+        val timeIn12Format = changeTimeInto12Hour(timeFormatted)
+//        holder.time.text = timeFormatted
+//        holder.time.text = timeIn12Format
+        holder.time.text = dayOfMessage
 
         if (getItemViewType(position) == SENDER){
-            firestore.collection("users").document(Utils.getUiLoggedIn()).get().addOnSuccessListener {documentSnapshot->
+            firestore.collection("Users").document(Utils.getUidLoggedIn()).get().addOnSuccessListener { documentSnapshot->
                 if (documentSnapshot.exists()) {
-                    Log.d(TAG, "onBindViewHolder: ${Utils.getUiLoggedIn()}")
+                    Log.d(TAG, "onBindViewHolder: ${Utils.getUidLoggedIn()}")
                     val userData = documentSnapshot.data
                     Glide.with(holder.itemView.context).load(documentSnapshot.getString("imageUrl"))
                         .placeholder(R.drawable.person_icon).into(holder.image)
                 }
             }
         }else{
-            firestore.collection("users").document(message.sender!!).get().addOnSuccessListener {documentSnapshot->
+            firestore.collection("Users").document(message.sender!!).get().addOnSuccessListener {documentSnapshot->
                 if (documentSnapshot.exists()) {
                     Log.d(TAG, "onBindViewHolder: ${message.receiver!!}")
                     Log.d(TAG, "onBindViewHolder: ${message.sender!!}")
@@ -75,7 +81,54 @@ class MessageAdapter(): RecyclerView.Adapter<myViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int =
-        if (messagesList[position].sender == Utils.getUiLoggedIn()) SENDER else RECIEVER
+        if (messagesList[position].sender == Utils.getUidLoggedIn()) SENDER else RECIEVER
+
+    private fun formatTime(inputTime: String): String {
+        val formattedTime = StringBuilder(inputTime)
+        formattedTime.insert(11, ":")
+        return formattedTime.substring(9, 14)
+    }
+
+    private fun changeTimeInto12Hour(inputTime: String): String{
+        var finalTime = ""
+        var hours = inputTime.split(":")
+        if(hours[0].toInt() > 12){
+            finalTime = (hours[0].toInt()-12).toString() + ":" + hours[1] + " PM"
+        }else{
+            finalTime = inputTime + " AM"
+        }
+        return finalTime
+    }
+
+    private fun checkIfToday(dateTimeString: String): String {
+        val inputFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+        val date = inputFormat.parse(dateTimeString)
+
+        val calendar = Calendar.getInstance()
+        val todayYear = calendar.get(Calendar.YEAR)
+        val todayWeek = calendar.get(Calendar.WEEK_OF_YEAR)
+        val today = calendar.get(Calendar.DAY_OF_MONTH)
+
+        calendar.time = date
+        val dateYear = calendar.get(Calendar.YEAR)
+        val dateWeek = calendar.get(Calendar.WEEK_OF_YEAR)
+
+        val dateTimeFormat = if (todayYear == dateYear) {
+            if (todayWeek == dateWeek) {
+                if(today == calendar.get(Calendar.DAY_OF_MONTH)){
+                    SimpleDateFormat("hh:mm a", Locale.getDefault())
+                }else{
+                    SimpleDateFormat("EEE hh:mm a", Locale.getDefault())
+                }
+            } else {
+                SimpleDateFormat("MMM dd hh:mm a", Locale.getDefault())
+            }
+        } else {
+            SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault())
+        }
+
+        return dateTimeFormat.format(date)
+    }
 
 }
 

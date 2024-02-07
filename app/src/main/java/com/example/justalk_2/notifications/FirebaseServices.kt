@@ -95,6 +95,8 @@ class FirebaseServices : FirebaseMessagingService() {
             enableLights(true)
             lightColor = Color.GREEN
         }
+
+        notificationManager.createNotificationChannel(channel)
     }
 
 }

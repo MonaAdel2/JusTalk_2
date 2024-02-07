@@ -22,6 +22,7 @@
         android:layout_marginTop="16dp"
         android:text="User Name"
         android:textSize="@dimen/headline1"
+        android:textColor="@color/black"
         android:fontFamily="@font/roboto_medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/img_profile_header"

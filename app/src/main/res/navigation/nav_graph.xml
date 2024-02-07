@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_chatFromHomeFragment"
             app:destination="@id/chatFromHomeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_imageProfileViewFragment"
+            app:destination="@id/imageProfileViewFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -53,4 +56,9 @@
             android:name="recentCahts"
             app:argType="com.example.justalk_2.model.RecentChats" />
     </fragment>
+    <fragment
+        android:id="@+id/imageProfileViewFragment"
+        android:name="com.example.justalk_2.fragments.ImageProfileViewFragment"
+        android:label="fragment_image_profile_view"
+        tools:layout="@layout/fragment_image_profile_view" />
 </navigation>
