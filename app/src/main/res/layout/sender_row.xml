@@ -14,7 +14,7 @@
         android:layout_height="35dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="3dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/person_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

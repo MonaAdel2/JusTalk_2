@@ -27,7 +27,7 @@ class ChatListRepo {
                 value?.forEach{document ->
                     val recentChatModel = document.toObject(RecentChats::class.java)
 
-                    if (recentChatModel.sender.equals(Utils.getUidLoggedIn())){
+//                    if (recentChatModel.sender.equals(Utils.getUidLoggedIn())){
                         recentChatModel.let {recentChat->
                             firestore.collection("Users").document(recentChat.friendId!!).get().addOnSuccessListener {
                                 if(it.exists()){
@@ -39,7 +39,7 @@ class ChatListRepo {
                             }
                             chatList.add(recentChat)
                         }
-                    }
+//                    }
                 }
                 mainChatList.value = chatList
             }
