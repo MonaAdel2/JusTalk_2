@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.example.justalk_2.notifications.entity.Token
 import com.example.justalk_2.notifications.network.RetrofitInstance
+import com.google.firebase.firestore.SetOptions
 
 class ChatAppViewModel: ViewModel() {
     private val TAG = "ChatAppViewModel"
@@ -82,6 +83,7 @@ class ChatAppViewModel: ViewModel() {
         mySharedPrefs.setValue("friendImage", friendImage)
 
 
+        val tempMessage = message.value!!
         firestore.collection("Messages").document(uniqueID.toString())
             .collection("Chats").document(Utils.getTime())
             .set(hashmap).addOnCompleteListener { task->
@@ -97,10 +99,39 @@ class ChatAppViewModel: ViewModel() {
                 )
 
                 firestore.collection("Conversation${Utils.getUidLoggedIn()}").document(receiver).set(hashmapForRecent)
-                firestore.collection("Conversation${receiver}").document(Utils.getUidLoggedIn())
-                    .update("message", message.value!!,
-                        "time",
-                        Utils.getTime(), "person", name.value!!)
+                Log.d(TAG, "sendMessage: create the recent chat for user ${Utils.getUidLoggedIn()}")
+
+                Log.d(TAG, "sendMessage: ${message.value!!}")
+                val conversationRef = firestore.collection("Conversation${receiver}").document(Utils.getUidLoggedIn())
+                    .get().addOnSuccessListener { documentSnapshot ->
+                    Log.d(TAG, "sendMessage: get the reference to the collection of receiver")
+                    if (documentSnapshot.exists()) {
+                        // Document exists, perform the update
+                        Log.d(TAG, "sendMessage: inside if condition of exists()")
+                        Log.d(TAG, "sendMessage: in if ${message.value!!}")
+                        firestore.collection("Conversation${receiver}").document(Utils.getUidLoggedIn())
+                            .update("message", tempMessage,
+                                "time", Utils.getTime(),
+                                "person", name.value!!)
+
+                    } else {
+                        // Document does not exist, create it first
+                        Log.d(TAG, "sendMessage: inside else ")
+                        Log.d(TAG, "sendMessage: in else ${message.value!!}")
+                        val data = hashMapOf(
+                            "friendId" to Utils.getUidLoggedIn(),
+                            "time" to Utils.getTime(),
+                            "sender" to Utils.getUidLoggedIn(),
+                            "message" to tempMessage,
+                            "friendsImage" to imageUrl.value!!,
+                            "name" to name.value!!,
+                            "person" to name.value!!
+                        )
+                        firestore.collection("Conversation${receiver}").document(Utils.getUidLoggedIn()).set(data)
+
+                    }
+
+                }
 
                 // for notification
                 firestore.collection("Tokens").document(receiver).addSnapshotListener { value, error ->
@@ -120,13 +151,19 @@ class ChatAppViewModel: ViewModel() {
                         }
 
                     }
+
                     // to clear the edit text after pressing send
                     if(task.isSuccessful){
                         message.value = ""
                     }
                 }
 
+//                if(task.isSuccessful){
+//                    message.value = ""
+//                }
+
             }
+
     }
 
     private fun sendNotification(notification: PushNotification) = viewModelScope.launch {

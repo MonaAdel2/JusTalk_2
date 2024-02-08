@@ -93,10 +93,10 @@ class ChatFragment : Fragment() {
                                         args.User.imageUrl!!)
         }
 
+        binding.progressBarChat1.visibility = View.GONE
         userViewModel.getMessages(args.User.userUid!!).observe(viewLifecycleOwner, Observer {
             binding.progressBarChat1.visibility = View.GONE
             initRecyclerView(it)
-
         })
 
 

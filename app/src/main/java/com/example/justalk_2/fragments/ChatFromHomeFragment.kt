@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -91,10 +92,12 @@ class ChatFromHomeFragment : Fragment() {
                 args.recentCahts.name!!,
                 args.recentCahts.friendsImage!!)
         }
+        binding.progressBarChat2.visibility = View.GONE
 
         userViewModel.getMessages(args.recentCahts.friendId!!).observe(viewLifecycleOwner, Observer {
             binding.progressBarChat2.visibility = View.GONE
             initRecyclerView(it)
+
         })
 
 
@@ -123,7 +126,11 @@ class ChatFromHomeFragment : Fragment() {
     private fun setToolbarData(){
         tvToolbarUsername.text = args.recentCahts.name
         tvToolbarStatus.text = args.recentCahts.status
-        Log.d("ChatFromHomeFragment", "setToolbarData: ${args.recentCahts.status} and ${args.recentCahts.name}")
+        if(args.recentCahts.status == "Online"){
+            imgUserProfile.borderColor = ContextCompat.getColor(requireContext(), R.color.online_status)
+        }else{
+            imgUserProfile.borderColor = ContextCompat.getColor(requireContext(), R.color.offline_status)
+        }
         Glide.with(requireActivity()).load(args.recentCahts.friendsImage).into(imgUserProfile)
     }
 
