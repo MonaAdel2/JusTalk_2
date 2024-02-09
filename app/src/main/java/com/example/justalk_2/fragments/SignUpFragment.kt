@@ -165,8 +165,8 @@ class SignUpFragment : Fragment() {
                 fireStore.collection("Users").document(user.uid).set(data).addOnSuccessListener {
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
-//                    activity?.supportFragmentManager?.popBackStack()
                     activity?.finish()
+//                    activity?.supportFragmentManager?.popBackStack()
                 }
 
             }.addOnFailureListener { exception ->

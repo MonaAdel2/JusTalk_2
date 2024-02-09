@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_nav_graph"
-    app:startDestination="@id/splashScreenFragment">
+    app:startDestination="@id/signInFragment">
 
     <fragment
         android:id="@+id/signInFragment"
@@ -40,19 +40,6 @@
         android:name="com.example.justalk_2.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
-    <fragment
-        android:id="@+id/splashScreenFragment"
-        android:name="com.example.justalk_2.fragments.SplashScreenFragment"
-        android:label="fragment_splash_screen"
-        tools:layout="@layout/fragment_splash_screen" >
-
-        <action
-            android:id="@+id/action_splashScreenFragment_to_homeFragment2"
-            app:destination="@id/homeFragment2" />
-        <action
-            android:id="@+id/action_splashScreenFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
-    </fragment>
     <fragment
         android:id="@+id/resetPasswordFragment"
         android:name="com.example.justalk_2.fragments.ResetPasswordFragment"

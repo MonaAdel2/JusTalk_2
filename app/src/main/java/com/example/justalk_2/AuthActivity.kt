@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 
 class AuthActivity : AppCompatActivity() {
+
     private lateinit var navController: NavController
     lateinit var viewShaded : View
     @SuppressLint("MissingInflatedId")

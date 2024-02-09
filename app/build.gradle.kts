@@ -85,4 +85,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-messaging:23.1.2")
     implementation ("com.google.firebase:firebase-installations:17.1.3")
 
+    // splash screen
+    implementation("androidx.core:core-splashscreen:1.0.0")
+
 }

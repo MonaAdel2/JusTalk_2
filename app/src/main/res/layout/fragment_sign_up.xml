@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/pass_hint"
                 android:inputType="textPassword"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:isScrollContainer="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
