@@ -10,11 +10,18 @@
             type="com.example.justalk_2.mvvm.AuthViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragments.SignUpFragment"
         android:background="@color/background_color">
+
+
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/btn_upload_img_register"
@@ -215,6 +222,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    </ScrollView>
 
 </layout>

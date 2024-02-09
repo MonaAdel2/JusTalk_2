@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if(user!!.userUid == Utils.getUidLoggedIn()){
                     username = user.username
                     tvUsername.text = username
-                    Glide.with(this).load(user.imageUrl).into(imgProfile)
+                    Glide.with(applicationContext).load(user.imageUrl).into(imgProfile)
                 }
             }
         }

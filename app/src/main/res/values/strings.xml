@@ -8,6 +8,8 @@
     <string name="welcome_message">Welcome back to JusTalk!</string>
     <string name="register_welcome">Welcome to JusTalk</string>
     <string name="register_wel_msg">Let\'s get you started right now!</string>
+    <string name="reset_password_msg">Enter your email address below to receive an email\nwith your password reset instruction.</string>
+    <string name="reset_password_title">Reset Password</string>
 
     <!-- text in authentication-->
     <string name="forget_pass">Forget Password?</string>
@@ -25,6 +27,7 @@
     <!-- buttons-->
     <string name="btn_login">Login</string>
     <string name="btn_register">Sign Up</string>
+    <string name="btn_reset_password">Reset Password</string>
 
     <!--   drawer-->
     <string name="open_drawer">Open Drawer</string>

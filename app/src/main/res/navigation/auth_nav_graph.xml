@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_signInFragment_to_homeFragment22"
             app:destination="@id/homeFragment2" />
+        <action
+            android:id="@+id/action_signInFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -48,6 +51,15 @@
             app:destination="@id/homeFragment2" />
         <action
             android:id="@+id/action_splashScreenFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.example.justalk_2.fragments.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" >
+        <action
+            android:id="@+id/action_resetPasswordFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
     </fragment>
 </navigation>
