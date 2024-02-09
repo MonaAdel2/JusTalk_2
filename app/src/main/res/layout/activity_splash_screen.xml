@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SplashScreenFragment">
+    tools:context=".SplashScreenActivity">
+
 
     <ImageView
-        android:id="@+id/img_logo"
+        android:id="@+id/img_logo_splash"
         android:layout_width="272dp"
         android:layout_height="275dp"
-        android:src="@drawable/justalk_logo_3"
+        android:src="@drawable/justalk_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -18,15 +19,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.325" />
 
+<!--    <ImageView-->
+<!--        android:id="@+id/img_logo"-->
+<!--        android:layout_width="272dp"-->
+<!--        android:layout_height="275dp"-->
+<!--        android:src="@drawable/anim_vector_drawable"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.501"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.325" />-->
+
     <ImageView
-        android:id="@+id/img_app_name"
+        android:id="@+id/img_app_name_splash"
         android:layout_width="221dp"
         android:layout_height="57dp"
-        android:src="@drawable/app_name_1"
+        android:src="@drawable/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_logo"
-        app:layout_constraintVertical_bias="0.075" />
+        app:layout_constraintTop_toBottomOf="@+id/img_logo_splash"
+        app:layout_constraintVertical_bias="0.0" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

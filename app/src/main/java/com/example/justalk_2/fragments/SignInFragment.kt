@@ -94,8 +94,9 @@ class SignInFragment : Fragment() {
             // need to move to the MainActivity
             progressBar.visibility = View.GONE
 //            binding.shadeView.visibility = View.GONE
-            val intent = Intent(requireContext(), MainActivity::class.java)
+            val intent = Intent(requireActivity(), MainActivity::class.java)
             startActivity(intent)
+            activity?.finish()
             activity?.supportFragmentManager?.popBackStack()  // finish
 
         }.addOnFailureListener {
