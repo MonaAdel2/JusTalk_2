@@ -3,13 +3,13 @@ package com.example.justalk_2.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class User (
+data class User(
     val userUid: String? = "",
     val username: String? = "",
     val userEmail: String? = "",
     val status: String? = "",
     val imageUrl: String? = "",
-) : Parcelable{
+) : Parcelable {
 
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -17,8 +17,7 @@ data class User (
         parcel.readString(),
         parcel.readString(),
         parcel.readString()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(userUid)

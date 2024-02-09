@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class MessageAdapter(): RecyclerView.Adapter<myViewHolder>() {
+class MessageAdapter : RecyclerView.Adapter<myViewHolder>() {
 
     var messagesList = listOf<Message>()
     val SENDER = 0
@@ -27,10 +27,10 @@ class MessageAdapter(): RecyclerView.Adapter<myViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): myViewHolder {
         var inflater = LayoutInflater.from(parent.context)
-        return if (viewType == SENDER){
+        return if (viewType == SENDER) {
             val view = inflater.inflate(R.layout.sender_row, parent, false)
             myViewHolder(view)
-        }else{
+        } else {
             val view = inflater.inflate(R.layout.reciever_row, parent, false)
             myViewHolder(view)
         }
@@ -46,61 +46,46 @@ class MessageAdapter(): RecyclerView.Adapter<myViewHolder>() {
         holder.time.visibility = View.VISIBLE
 
         holder.message.text = message.message
-        val dayOfMessage = checkIfToday(message.time!!)
-        val timeFormatted = formatTime(message.time!!)
-        val timeIn12Format = changeTimeInto12Hour(timeFormatted)
-//        holder.time.text = timeFormatted
-//        holder.time.text = timeIn12Format
+        val dayOfMessage = formattedTime(message.time!!)
         holder.time.text = dayOfMessage
 
-        if (getItemViewType(position) == SENDER){
-            firestore.collection("Users").document(Utils.getUidLoggedIn()).get().addOnSuccessListener { documentSnapshot->
-                if (documentSnapshot.exists()) {
-                    Log.d(TAG, "onBindViewHolder: ${Utils.getUidLoggedIn()}")
-                    val userData = documentSnapshot.data
-                    Glide.with(holder.itemView.context).load(documentSnapshot.getString("imageUrl"))
-                        .placeholder(R.drawable.person_icon).into(holder.image)
+        if (getItemViewType(position) == SENDER) {
+            firestore.collection("Users").document(Utils.getUidLoggedIn()).get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+                        Log.d(TAG, "onBindViewHolder: ${Utils.getUidLoggedIn()}")
+                        val userData = documentSnapshot.data
+                        Glide.with(holder.itemView.context)
+                            .load(documentSnapshot.getString("imageUrl"))
+                            .placeholder(R.drawable.person_icon).into(holder.image)
+                    }
                 }
-            }
-        }else{
-            firestore.collection("Users").document(message.sender!!).get().addOnSuccessListener {documentSnapshot->
-                if (documentSnapshot.exists()) {
-                    Log.d(TAG, "onBindViewHolder: ${message.receiver!!}")
-                    Log.d(TAG, "onBindViewHolder: ${message.sender!!}")
-                    val userData = documentSnapshot.data
-                    Glide.with(holder.itemView.context).load(documentSnapshot.getString("imageUrl"))
-                        .placeholder(R.drawable.person_icon).into(holder.image)
+        } else {
+            firestore.collection("Users").document(message.sender!!).get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+                        Log.d(TAG, "onBindViewHolder: ${message.receiver!!}")
+                        Log.d(TAG, "onBindViewHolder: ${message.sender}")
+                        val userData = documentSnapshot.data
+                        Glide.with(holder.itemView.context)
+                            .load(documentSnapshot.getString("imageUrl"))
+                            .placeholder(R.drawable.person_icon).into(holder.image)
+                    }
                 }
-        }
 
 
         }
     }
-    fun setMessageList(list: List<Message>){
+
+    fun setMessageList(list: List<Message>) {
         this.messagesList = list
     }
 
     override fun getItemViewType(position: Int): Int =
         if (messagesList[position].sender == Utils.getUidLoggedIn()) SENDER else RECIEVER
 
-    private fun formatTime(inputTime: String): String {
-        val formattedTime = StringBuilder(inputTime)
-        formattedTime.insert(11, ":")
-        return formattedTime.substring(9, 14)
-    }
 
-    private fun changeTimeInto12Hour(inputTime: String): String{
-        var finalTime = ""
-        var hours = inputTime.split(":")
-        if(hours[0].toInt() > 12){
-            finalTime = (hours[0].toInt()-12).toString() + ":" + hours[1] + " PM"
-        }else{
-            finalTime = inputTime + " AM"
-        }
-        return finalTime
-    }
-
-    private fun checkIfToday(dateTimeString: String): String {
+    private fun formattedTime(dateTimeString: String): String {
         val inputFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         val date = inputFormat.parse(dateTimeString)
 
@@ -115,9 +100,9 @@ class MessageAdapter(): RecyclerView.Adapter<myViewHolder>() {
 
         val dateTimeFormat = if (todayYear == dateYear) {
             if (todayWeek == dateWeek) {
-                if(today == calendar.get(Calendar.DAY_OF_MONTH)){
+                if (today == calendar.get(Calendar.DAY_OF_MONTH)) {
                     SimpleDateFormat("hh:mm a", Locale.getDefault())
-                }else{
+                } else {
                     SimpleDateFormat("EEE hh:mm a", Locale.getDefault())
                 }
             } else {
@@ -132,7 +117,7 @@ class MessageAdapter(): RecyclerView.Adapter<myViewHolder>() {
 
 }
 
-class myViewHolder(row: View): RecyclerView.ViewHolder(row){
+class myViewHolder(row: View) : RecyclerView.ViewHolder(row) {
     val message: TextView = row.findViewById(R.id.tv_message_item)
     val time: TextView = row.findViewById(R.id.tv_time_item)
     val image: CircleImageView = row.findViewById(R.id.img_user_item)

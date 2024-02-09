@@ -1,8 +1,6 @@
 package com.example.justalk_2
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +9,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.ScaleAnimation
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -25,7 +24,16 @@ class SplashScreenActivity : AppCompatActivity() {
         imgLogoText = findViewById(R.id.img_app_name_splash)
 
         // Create a scale animation to gradually increase the size of the logo and fade it in
-        val scaleAnimation = ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+        val scaleAnimation = ScaleAnimation(
+            0f,
+            1f,
+            0f,
+            1f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
         scaleAnimation.duration = 1000
         scaleAnimation.startOffset = 200
 

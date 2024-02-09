@@ -14,15 +14,18 @@ import com.example.justalk_2.Utils
 import com.google.firebase.firestore.FirebaseFirestore
 
 private const val CHANNEL_Id = "my_channel"
-class NotificationReplay: BroadcastReceiver() {
+
+class NotificationReplay : BroadcastReceiver() {
 
     val firestore = FirebaseFirestore.getInstance()
+
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onReceive(context: Context?, intent: Intent?) {
-        val notificationManager : NotificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager: NotificationManager =
+            context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val removeInput = RemoteInput.getResultsFromIntent(intent)
 
-        if (removeInput != null){
+        if (removeInput != null) {
             val repliedText = removeInput.getString("Key_REPLY_TEXT")
             val mySharedPrefs = SharedPrefs(context)
 
@@ -31,9 +34,11 @@ class NotificationReplay: BroadcastReceiver() {
             val friendName = mySharedPrefs.getValue("friendName")
             val friendImage = mySharedPrefs.getValue("friendImage")
 
-            val hashMap = hashMapOf<String, Any>("sender" to Utils.getUidLoggedIn(),
+            val hashMap = hashMapOf<String, Any>(
+                "sender" to Utils.getUidLoggedIn(),
                 "time" to Utils.getTime(), "receiver" to friendId!!,
-                "message" to repliedText!!)
+                "message" to repliedText!!
+            )
 
             // for chat room
             firestore.collection("Messages").document(chatRoomId!!)
@@ -66,12 +71,11 @@ class NotificationReplay: BroadcastReceiver() {
             val sharedCustomPref = SharedPrefs(context)
             val replayID = sharedCustomPref.getIntValue("values", 0)
             val repliedNotfication = NotificationCompat.Builder(context, CHANNEL_Id)
-                .setSmallIcon(R.drawable.chat_icon)
+                .setSmallIcon(R.drawable.justalk_logo)
                 .setContentText("Replay Sent")
                 .build()
 
             notificationManager.notify(replayID!!, repliedNotfication)
-
 
 
         }

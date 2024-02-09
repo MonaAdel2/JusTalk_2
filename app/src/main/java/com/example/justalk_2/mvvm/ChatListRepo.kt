@@ -13,33 +13,32 @@ class ChatListRepo {
 
     private val firestore = FirebaseFirestore.getInstance()
 
-    fun getAllChatsList(): LiveData<List<RecentChats>>{
+    fun getAllChatsList(): LiveData<List<RecentChats>> {
 
         val mainChatList = MutableLiveData<List<RecentChats>>()
 
-        firestore.collection("Conversation${Utils.getUidLoggedIn()}").orderBy("time", Query.Direction.DESCENDING)
-            .addSnapshotListener{value, error ->
-                if (error != null){
+        firestore.collection("Conversation${Utils.getUidLoggedIn()}")
+            .orderBy("time", Query.Direction.DESCENDING)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
                     return@addSnapshotListener
                 }
                 val chatList = mutableListOf<RecentChats>()
 
-                value?.forEach{document ->
+                value?.forEach { document ->
                     val recentChatModel = document.toObject(RecentChats::class.java)
-
-//                    if (recentChatModel.sender.equals(Utils.getUidLoggedIn())){
-                        recentChatModel.let {recentChat->
-                            firestore.collection("Users").document(recentChat.friendId!!).get().addOnSuccessListener {
-                                if(it.exists()){
+                    recentChatModel.let { recentChat ->
+                        firestore.collection("Users").document(recentChat.friendId!!).get()
+                            .addOnSuccessListener {
+                                if (it.exists()) {
                                     val data = it.data
                                     Log.d(TAG, "getFriendStatus: ${data?.get("status").toString()}")
                                     recentChat.status = data?.get("status").toString()
 
                                 }
                             }
-                            chatList.add(recentChat)
-                        }
-//                    }
+                        chatList.add(recentChat)
+                    }
                 }
                 mainChatList.value = chatList
             }

@@ -1,15 +1,12 @@
 package com.example.justalk_2
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.DrawableWrapper
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -25,7 +22,8 @@ import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessaging
 import de.hdodenhof.circleimageview.CircleImageView
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NavigationViewController {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    NavigationViewController {
     private lateinit var navController: NavController
     lateinit var drawerLayout: DrawerLayout
     lateinit var toolbar: Toolbar
@@ -34,7 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var firestore: FirebaseFirestore
     lateinit var navigationView: NavigationView
     lateinit var header: View
-    lateinit var tvUsername:TextView
+    lateinit var tvUsername: TextView
     private var username: String? = null
     lateinit var imgProfile: CircleImageView
     lateinit var viewShaded: View
@@ -80,14 +78,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun addUserDataToNavigationDrawer() {
-        firestore.collection("Users").addSnapshotListener{snapshot, exception->
-            if(exception!= null){
+        firestore.collection("Users").addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
                 return@addSnapshotListener
             }
-            snapshot?.documents?.forEach {document ->
+            snapshot?.documents?.forEach { document ->
                 val user = document.toObject(User::class.java)
                 // get the current user document
-                if(user!!.userUid == Utils.getUidLoggedIn()){
+                if (user!!.userUid == Utils.getUidLoggedIn()) {
                     username = user.username
                     tvUsername.text = username
                     Glide.with(applicationContext).load(user.imageUrl).into(imgProfile)
@@ -96,40 +94,47 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    fun createDrawerLayout(){
+    fun createDrawerLayout() {
         drawerLayout = binding.drawerLayout
-        var toogle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer)
+        var toogle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.open_drawer,
+            R.string.close_drawer
+        )
         drawerLayout.addDrawerListener(toogle)
         toogle.syncState()
 
-        var navigationView : NavigationView = findViewById(R.id.nav_view)
+        var navigationView: NavigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
     }
 
 
-
     override fun onBackPressed() {
-        if(supportFragmentManager.backStackEntryCount > 0){
+        if (supportFragmentManager.backStackEntryCount > 0) {
             super.onBackPressed()
-        }else{
-            if (navController.currentDestination?.id == R.id.homeFragment){
+        } else {
+            if (navController.currentDestination?.id == R.id.homeFragment) {
                 moveTaskToBack(true)
-            }else{
+            } else {
                 super.onBackPressed()
             }
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.action_setting->{
+        when (item.itemId) {
+            R.id.action_setting -> {
                 goToSettings()
                 drawerLayout.closeDrawer(GravityCompat.START)
                 return true
             }
-            R.id.action_logout->{
-                if (auth.currentUser != null){
-                    firestore.collection("Users").document(Utils.getUidLoggedIn()).update("status", "Offline")
+
+            R.id.action_logout -> {
+                if (auth.currentUser != null) {
+                    firestore.collection("Users").document(Utils.getUidLoggedIn())
+                        .update("status", "Offline")
                 }
                 logout()
                 drawerLayout.closeDrawer(GravityCompat.START)
@@ -158,50 +163,55 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
-    private fun generateToken(){
+    private fun generateToken() {
         val firebaseInstance = FirebaseInstallations.getInstance()
-        firebaseInstance.id.addOnSuccessListener {installationID->
-            FirebaseMessaging.getInstance().token.addOnSuccessListener {retrivedToken->
+        firebaseInstance.id.addOnSuccessListener { installationID ->
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { retrivedToken ->
                 token = retrivedToken
                 val hashmap = hashMapOf<String, Any>("token" to token)
-                firestore.collection("Tokens").document(Utils.getUidLoggedIn()).set(hashmap).addOnSuccessListener {
+                firestore.collection("Tokens").document(Utils.getUidLoggedIn()).set(hashmap)
+                    .addOnSuccessListener {
 
-                }
+                    }
 
             }
 
         }
     }
 
-    private fun openImageProfile(){
+    private fun openImageProfile() {
         navController.navigate(R.id.imageProfileViewFragment)
     }
 
     override fun onPause() {
         super.onPause()
-        if (auth.currentUser != null){
-            firestore.collection("Users").document(Utils.getUidLoggedIn()).update("status", "Offline")
+        if (auth.currentUser != null) {
+            firestore.collection("Users").document(Utils.getUidLoggedIn())
+                .update("status", "Offline")
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if (auth.currentUser != null){
-            firestore.collection("Users").document(Utils.getUidLoggedIn()).update("status", "Online")
+        if (auth.currentUser != null) {
+            firestore.collection("Users").document(Utils.getUidLoggedIn())
+                .update("status", "Online")
         }
     }
 
     override fun onStart() {
         super.onStart()
-        if (auth.currentUser != null){
-            firestore.collection("Users").document(Utils.getUidLoggedIn()).update("status", "Online")
+        if (auth.currentUser != null) {
+            firestore.collection("Users").document(Utils.getUidLoggedIn())
+                .update("status", "Online")
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (auth.currentUser != null){
-            firestore.collection("Users").document(Utils.getUidLoggedIn()).update("status", "Offline")
+        if (auth.currentUser != null) {
+            firestore.collection("Users").document(Utils.getUidLoggedIn())
+                .update("status", "Offline")
         }
     }
 }

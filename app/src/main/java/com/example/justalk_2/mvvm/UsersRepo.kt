@@ -8,25 +8,25 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class UsersRepo {
 
-    private  var firestore = FirebaseFirestore.getInstance()
+    private var firestore = FirebaseFirestore.getInstance()
 
-    fun getUsers(): LiveData<List<User>>{
+    fun getUsers(): LiveData<List<User>> {
         val users = MutableLiveData<List<User>>()
 
-        firestore.collection("Users").addSnapshotListener{snapshot, exception->
-            if(exception!= null){
+        firestore.collection("Users").addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
                 return@addSnapshotListener
             }
 
             val usersList = mutableListOf<User>()
-            
-            snapshot?.documents?.forEach {document ->
+
+            snapshot?.documents?.forEach { document ->
 
                 val user = document.toObject(User::class.java)
 
                 // skip the current user from being displayed
-                if(user!!.userUid != Utils.getUidLoggedIn()){
-                    user.let{
+                if (user!!.userUid != Utils.getUidLoggedIn()) {
+                    user.let {
                         usersList.add(it)
                     }
                 }

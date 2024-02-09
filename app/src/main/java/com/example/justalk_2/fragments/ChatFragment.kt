@@ -3,7 +3,6 @@ package com.example.justalk_2.fragments
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -42,15 +42,15 @@ class ChatFragment : Fragment() {
     lateinit var tvToolbarStatus: TextView
     lateinit var imgUserProfile: CircleImageView
     lateinit var imgBackBtn: ImageView
-    
-    private lateinit var messageAdapter : MessageAdapter
+
+    private lateinit var messageAdapter: MessageAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        _binding =  FragmentChatBinding.inflate(inflater, container, false)
+        _binding = FragmentChatBinding.inflate(inflater, container, false)
         var view = binding.root
 
         activity_ = activity as MainActivity
@@ -70,27 +70,35 @@ class ChatFragment : Fragment() {
         binding.viewModel = userViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        toolbar = requireActivity().findViewById<View>(com.example.justalk_2.R.id.toolbar) as Toolbar
-        tvToolbarTitle = toolbar.findViewById(com.example.justalk_2.R.id.tv_title_app_bar) as TextView
+        toolbar =
+            requireActivity().findViewById<View>(R.id.toolbar) as Toolbar
+        tvToolbarTitle =
+            toolbar.findViewById(R.id.tv_title_app_bar) as TextView
 
-        tvToolbarUsername = toolbar.findViewById(com.example.justalk_2.R.id.tv_username_chat_toolbar) as TextView
-        tvToolbarStatus = toolbar.findViewById(com.example.justalk_2.R.id.tv_user_status_chat_toolbar) as TextView
-        imgUserProfile = toolbar.findViewById(com.example.justalk_2.R.id.img_user_chat_toolbar) as CircleImageView
-        imgBackBtn = toolbar.findViewById(com.example.justalk_2.R.id.btn_back_chat_toolbar) as ImageView
+        tvToolbarUsername =
+            toolbar.findViewById(R.id.tv_username_chat_toolbar) as TextView
+        tvToolbarStatus =
+            toolbar.findViewById(R.id.tv_user_status_chat_toolbar) as TextView
+        imgUserProfile =
+            toolbar.findViewById(R.id.img_user_chat_toolbar) as CircleImageView
+        imgBackBtn =
+            toolbar.findViewById(R.id.btn_back_chat_toolbar) as ImageView
 
         changeToolbarItemsVisibility()
         setToolbarData()
 
 
-        imgBackBtn.setOnClickListener{
+        imgBackBtn.setOnClickListener {
             view.findNavController().navigate(R.id.action_chatFragment_to_homeFragment)
         }
 
         binding.btnSendChatLog.setOnClickListener {
-            userViewModel.sendMessage(Utils.getUidLoggedIn(),
-                                        args.User.userUid!!,
-                                        args.User.username!!,
-                                        args.User.imageUrl!!)
+            userViewModel.sendMessage(
+                Utils.getUidLoggedIn(),
+                args.User.userUid!!,
+                args.User.username!!,
+                args.User.imageUrl!!
+            )
         }
 
         binding.progressBarChat1.visibility = View.GONE
@@ -113,7 +121,7 @@ class ChatFragment : Fragment() {
 
     }
 
-    private fun changeToolbarItemsVisibility(){
+    private fun changeToolbarItemsVisibility() {
         imgUserProfile.visibility = View.VISIBLE
         tvToolbarUsername.visibility = View.VISIBLE
         tvToolbarStatus.visibility = View.VISIBLE
@@ -122,14 +130,16 @@ class ChatFragment : Fragment() {
     }
 
 
-    private fun setToolbarData(){
+    private fun setToolbarData() {
         tvToolbarUsername.text = args.User.username
         tvToolbarStatus.text = args.User.status
         Log.d("ChatFragment", "setToolbarData: ${args.User.status} and ${args.User.username}")
-        if(args.User.status == "Online"){
-            imgUserProfile.borderColor = ContextCompat.getColor(requireContext(), R.color.online_status)
-        }else{
-            imgUserProfile.borderColor = ContextCompat.getColor(requireContext(), R.color.offline_status)
+        if (args.User.status == "Online") {
+            imgUserProfile.borderColor =
+                ContextCompat.getColor(requireContext(), R.color.online_status)
+        } else {
+            imgUserProfile.borderColor =
+                ContextCompat.getColor(requireContext(), R.color.offline_status)
         }
         Glide.with(requireActivity()).load(args.User.imageUrl).into(imgUserProfile)
     }
@@ -138,7 +148,6 @@ class ChatFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         activity_.setDrawerUnlocked()
-//        toolbar.setNavigationIcon(R.drawable.menu_icon);
         _binding = null
     }
 
