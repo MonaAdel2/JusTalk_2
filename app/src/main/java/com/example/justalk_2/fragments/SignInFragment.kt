@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.justalk_2.MainActivity
 import com.example.justalk_2.databinding.FragmentSignInBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -80,6 +81,11 @@ class SignInFragment : Fragment() {
 
             }
 
+        }
+
+        binding.tvForgetPassLogin.setOnClickListener {
+            val action = SignInFragmentDirections.actionSignInFragmentToResetPasswordFragment()
+            view?.findNavController()?.navigate(action)
         }
     }
 

@@ -173,14 +173,6 @@
         app:layout_constraintStart_toEndOf="@+id/tv_dont_have_acc_login"
         app:layout_constraintTop_toBottomOf="@+id/btn_login_login" />
 
-<!--    <View-->
-<!--        android:id="@+id/shadeView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="#80000000"-->
-<!--        android:visibility="gone"-->
-<!--        android:translationZ="20dp"/>-->
-
     <ProgressBar
         android:id="@+id/progressBar_sign_in"
         android:layout_width="60dp"

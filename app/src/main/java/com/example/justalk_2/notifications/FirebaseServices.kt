@@ -77,7 +77,7 @@ class FirebaseServices : FirebaseMessagingService() {
 
         val notification  = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentText(Html.fromHtml("<b>${message.data["title"]}</b>: ${message.data["message"]}"))
-            .setSmallIcon(R.drawable.chatapp)
+            .setSmallIcon(R.drawable.justalk_logo_3)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .addAction(replayAction)

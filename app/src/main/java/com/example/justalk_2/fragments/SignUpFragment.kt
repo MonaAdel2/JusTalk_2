@@ -162,10 +162,13 @@ class SignUpFragment : Fragment() {
                 activity_.viewShaded.visibility = View.GONE
                 binding.progressBarSignUp.visibility = View.GONE
 
-                fireStore.collection("Users").document(user.uid).set(data)
-                val intent = Intent(requireContext(), MainActivity::class.java)
-                startActivity(intent)
-                activity?.supportFragmentManager?.popBackStack()
+                fireStore.collection("Users").document(user.uid).set(data).addOnSuccessListener {
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+//                    activity?.supportFragmentManager?.popBackStack()
+                    activity?.finish()
+                }
+
             }.addOnFailureListener { exception ->
                 // Handle user creation failure
                 Toast.makeText(requireContext(), "Failed to create user: ${exception.message}", Toast.LENGTH_SHORT).show()
