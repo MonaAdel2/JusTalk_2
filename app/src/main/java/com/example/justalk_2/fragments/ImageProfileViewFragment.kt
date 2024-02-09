@@ -1,19 +1,18 @@
 package com.example.justalk_2.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.justalk_2.MainActivity
 import com.example.justalk_2.R
 import com.example.justalk_2.databinding.FragmentImageProfileViewBinding
-import com.example.justalk_2.databinding.FragmentSignInBinding
 import com.example.justalk_2.mvvm.ChatAppViewModel
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -36,9 +35,9 @@ class ImageProfileViewFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        _binding =  FragmentImageProfileViewBinding.inflate(inflater, container, false)
+        _binding = FragmentImageProfileViewBinding.inflate(inflater, container, false)
         var view = binding.root
         activity_ = activity as MainActivity
         activity_.setDrawerLocked()
@@ -50,13 +49,14 @@ class ImageProfileViewFragment : Fragment() {
 
         imageProfileViewModel = ViewModelProvider(this).get(ChatAppViewModel::class.java)
 
-        toolbar = requireActivity().findViewById<View>(com.example.justalk_2.R.id.toolbar) as Toolbar
+        toolbar =
+            requireActivity().findViewById<View>(R.id.toolbar) as Toolbar
         drawerLayout = requireActivity().findViewById<View>(R.id.drawer_layout) as DrawerLayout
 
         toolbar.visibility = View.GONE
 
 
-        imageProfileViewModel.imageUrl.observe(viewLifecycleOwner, Observer{
+        imageProfileViewModel.imageUrl.observe(viewLifecycleOwner, Observer {
             loadImage(it)
         })
 
@@ -74,7 +74,6 @@ class ImageProfileViewFragment : Fragment() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
     }
-
 
 
 }

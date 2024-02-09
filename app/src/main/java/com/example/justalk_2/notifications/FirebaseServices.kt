@@ -11,14 +11,13 @@ import android.os.Build
 import android.text.Html
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.app.RemoteInput
 import com.example.justalk_2.MainActivity
 import com.example.justalk_2.R
+import com.example.justalk_2.SharedPrefs
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlin.random.Random
-import androidx.core.app.RemoteInput
-import com.example.justalk_2.SharedPrefs
-import okhttp3.internal.notify
 
 const val CHANNEL_ID = "my_channel"
 
@@ -33,7 +32,7 @@ class FirebaseServices : FirebaseMessagingService() {
             get() {
                 return sharedPrefs?.getString("token", "")
             }
-            set(value){
+            set(value) {
                 sharedPrefs?.edit()?.putString("token", value)?.apply()
             }
 
@@ -51,10 +50,11 @@ class FirebaseServices : FirebaseMessagingService() {
 
         val intent = Intent(this, MainActivity::class.java)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationID = Random.nextInt()
 
-        if(Build.VERSION.SDK_INT  >Build.VERSION_CODES.O ){
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
             createNotificationChannel(notificationManager)
 
         }
@@ -67,17 +67,20 @@ class FirebaseServices : FirebaseMessagingService() {
         val replayIntent = Intent(this, NotificationReplay::class.java)
 
         // for replay action -> create intent
-        val replayPendingIntent = PendingIntent.getBroadcast(this, 0, replayIntent, PendingIntent.FLAG_MUTABLE)
+        val replayPendingIntent =
+            PendingIntent.getBroadcast(this, 0, replayIntent, PendingIntent.FLAG_MUTABLE)
 
-        val replayAction = NotificationCompat.Action.Builder(R.drawable.replay_icon, "Replay", replayPendingIntent).addRemoteInput(remoteInput).build()
+        val replayAction =
+            NotificationCompat.Action.Builder(R.drawable.replay_icon, "Replay", replayPendingIntent)
+                .addRemoteInput(remoteInput).build()
 
         val sharedCustomPrefs = SharedPrefs(applicationContext)
 
         sharedCustomPrefs.setIntValue("values", notificationID)
 
-        val notification  = NotificationCompat.Builder(this, CHANNEL_ID)
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentText(Html.fromHtml("<b>${message.data["title"]}</b>: ${message.data["message"]}"))
-            .setSmallIcon(R.drawable.justalk_logo_3)
+            .setSmallIcon(R.drawable.justalk_logo)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .addAction(replayAction)
@@ -90,7 +93,11 @@ class FirebaseServices : FirebaseMessagingService() {
     private fun createNotificationChannel(notificationManager: NotificationManager) {
 
         val channelName = "channelName"
-        val channel = NotificationChannel(CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH).apply {
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            channelName,
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
             description = "Channel Description"
             enableLights(true)
             lightColor = Color.GREEN

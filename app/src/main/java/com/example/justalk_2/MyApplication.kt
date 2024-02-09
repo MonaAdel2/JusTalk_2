@@ -2,9 +2,9 @@ package com.example.justalk_2
 
 import android.app.Application
 
-class MyApplication: Application() {
+class MyApplication : Application() {
 
-    companion object{
+    companion object {
         lateinit var instance: MyApplication
 
     }

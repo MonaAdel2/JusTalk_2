@@ -6,17 +6,17 @@ import java.util.Date
 import java.util.Locale
 
 class Utils {
-    companion object{
-        private val auth  = FirebaseAuth.getInstance()
-        private var userId : String = ""
+    companion object {
+        private val auth = FirebaseAuth.getInstance()
+        private var userId: String = ""
 
         const val REQUEST_IMAGE_CAPTURE = 1
         const val REQUEST_IMAGE_PICK = 2
 
 
-        fun getUidLoggedIn(): String{
+        fun getUidLoggedIn(): String {
 
-            if(auth.currentUser != null){
+            if (auth.currentUser != null) {
                 userId = auth.currentUser!!.uid
             }
 

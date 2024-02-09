@@ -13,13 +13,14 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class RecentChatsAdapter: RecyclerView.Adapter<RecentChatsViewHolder>() {
+class RecentChatsAdapter : RecyclerView.Adapter<RecentChatsViewHolder>() {
 
     private var recentChatsList = listOf<RecentChats>()
     private var listener: onRecentChatClicked? = null
     private var recentChats = RecentChats()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentChatsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recent_chats_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.recent_chats_item, parent, false)
         return RecentChatsViewHolder(view)
     }
 
@@ -41,47 +42,27 @@ class RecentChatsAdapter: RecyclerView.Adapter<RecentChatsViewHolder>() {
         val makeLastMessage = "${firstName}: ${messagePart} "
         holder.tvMessage.text = makeLastMessage
 
-        Glide.with(holder.itemView.context).load(recentChatsList.friendsImage).placeholder(R.drawable.person_icon).into(holder.imgFriend)
+        Glide.with(holder.itemView.context).load(recentChatsList.friendsImage)
+            .placeholder(R.drawable.person_icon).into(holder.imgFriend)
 
         // time of the message
-        val dayOfMessage = checkIfToday(recentChatsList.time!!)
-        val timeFormatted = formatTime(recentChatsList.time!!)
-        val timeIn12Format = changeTimeInto12Hour(timeFormatted)
-//        holder.tvTime.text = timeFormatted
-//        holder.tvTime.text = timeIn12Format
+        val dayOfMessage = formattedTime(recentChatsList.time!!)
         holder.tvTime.text = dayOfMessage
-
         holder.itemView.setOnClickListener {
             listener?.getOnRecentChatClicked(position, recentChatsList)
         }
     }
 
-    fun setOnRecentChatsListener(listener: onRecentChatClicked){
+    fun setOnRecentChatsListener(listener: onRecentChatClicked) {
         this.listener = listener
     }
 
-    fun setRecentChatList(list: List<RecentChats>){
+    fun setRecentChatList(list: List<RecentChats>) {
         this.recentChatsList = list
     }
 
-    private fun formatTime(inputTime: String): String {
-        val formattedTime = StringBuilder(inputTime)
-        formattedTime.insert(11, ":")
-        return formattedTime.substring(9, 14)
-    }
 
-    private fun changeTimeInto12Hour(inputTime: String): String{
-        var finalTime = ""
-        var hours = inputTime.split(":")
-        if(hours[0].toInt() > 12){
-            finalTime = (hours[0].toInt()-12).toString() + ":" + hours[1] + " PM"
-        }else{
-            finalTime = inputTime + " AM"
-        }
-        return finalTime
-    }
-
-    private fun checkIfToday(dateTimeString: String): String {
+    private fun formattedTime(dateTimeString: String): String {
         val inputFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         val date = inputFormat.parse(dateTimeString)
 
@@ -96,9 +77,9 @@ class RecentChatsAdapter: RecyclerView.Adapter<RecentChatsViewHolder>() {
 
         val dateTimeFormat = if (todayYear == dateYear) {
             if (todayWeek == dateWeek) {
-                if(today == calendar.get(Calendar.DAY_OF_MONTH)){
+                if (today == calendar.get(Calendar.DAY_OF_MONTH)) {
                     SimpleDateFormat("hh:mm a", Locale.getDefault())
-                }else{
+                } else {
                     SimpleDateFormat("EEE hh:mm a", Locale.getDefault())
                 }
             } else {
@@ -114,7 +95,7 @@ class RecentChatsAdapter: RecyclerView.Adapter<RecentChatsViewHolder>() {
 
 }
 
-class RecentChatsViewHolder(row: View): RecyclerView.ViewHolder(row){
+class RecentChatsViewHolder(row: View) : RecyclerView.ViewHolder(row) {
     val imgFriend: CircleImageView = row.findViewById(R.id.img_friend_recent_chat_item)
     val tvFriendName: TextView = row.findViewById(R.id.tv_friend_name_recent_chat_item)
     val tvMessage: TextView = row.findViewById(R.id.tv_message__recent_chat_item)
@@ -122,6 +103,6 @@ class RecentChatsViewHolder(row: View): RecyclerView.ViewHolder(row){
 
 }
 
-interface onRecentChatClicked{
+interface onRecentChatClicked {
     fun getOnRecentChatClicked(position: Int, recentChatsList: RecentChats)
 }

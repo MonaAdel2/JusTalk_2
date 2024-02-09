@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +14,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.justalk_2.MainActivity
 import com.example.justalk_2.R
 import com.example.justalk_2.Utils
-import com.example.justalk_2.databinding.FragmentChatFromHomeBinding
 import com.example.justalk_2.databinding.FragmentSettingBinding
 import com.example.justalk_2.mvvm.ChatAppViewModel
 import com.google.firebase.storage.FirebaseStorage
@@ -56,9 +54,9 @@ class SettingFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        _binding =  FragmentSettingBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingBinding.inflate(inflater, container, false)
         var view = binding.root
         activity_ = activity as MainActivity
         activity_.setDrawerLocked()
@@ -76,22 +74,28 @@ class SettingFragment : Fragment() {
         binding.viewModel = settingViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        toolbar = requireActivity().findViewById<View>(com.example.justalk_2.R.id.toolbar) as Toolbar
-        tvToolbarTitle = toolbar.findViewById(com.example.justalk_2.R.id.tv_title_app_bar) as TextView
+        toolbar =
+            requireActivity().findViewById<View>(R.id.toolbar) as Toolbar
+        tvToolbarTitle =
+            toolbar.findViewById(R.id.tv_title_app_bar) as TextView
 
-        tvToolbarUsername = toolbar.findViewById(com.example.justalk_2.R.id.tv_username_chat_toolbar) as TextView
-        tvToolbarStatus = toolbar.findViewById(com.example.justalk_2.R.id.tv_user_status_chat_toolbar) as TextView
-        imgUserProfile = toolbar.findViewById(com.example.justalk_2.R.id.img_user_chat_toolbar) as CircleImageView
-        imgBackBtn = toolbar.findViewById(com.example.justalk_2.R.id.btn_back_chat_toolbar) as ImageView
+        tvToolbarUsername =
+            toolbar.findViewById(R.id.tv_username_chat_toolbar) as TextView
+        tvToolbarStatus =
+            toolbar.findViewById(R.id.tv_user_status_chat_toolbar) as TextView
+        imgUserProfile =
+            toolbar.findViewById(R.id.img_user_chat_toolbar) as CircleImageView
+        imgBackBtn =
+            toolbar.findViewById(R.id.btn_back_chat_toolbar) as ImageView
 
         changeToolbarItemsVisibility()
         setToolbarData()
 
-        imgBackBtn.setOnClickListener{
+        imgBackBtn.setOnClickListener {
             view.findNavController().navigate(R.id.action_settingFragment_to_homeFragment)
         }
 
-        settingViewModel.imageUrl.observe(viewLifecycleOwner, Observer{
+        settingViewModel.imageUrl.observe(viewLifecycleOwner, Observer {
             loadImage(it)
         })
 
@@ -105,9 +109,11 @@ class SettingFragment : Fragment() {
                     options[item] == "Take Photo" -> {
                         captureImageFromCamera()
                     }
+
                     options[item] == "Choose from Gallery" -> {
                         pickImageFromGallery()
                     }
+
                     options[item] == "Cancel" -> dialog.dismiss()
                 }
             }
@@ -127,13 +133,15 @@ class SettingFragment : Fragment() {
 
     }
 
-    private fun pickImageFromGallery(){
-        val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        if (pickImageIntent.resolveActivity(requireActivity().packageManager) != null){
+    private fun pickImageFromGallery() {
+        val pickImageIntent =
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        if (pickImageIntent.resolveActivity(requireActivity().packageManager) != null) {
             startActivityForResult(pickImageIntent, Utils.REQUEST_IMAGE_PICK)
         }
     }
-    private fun captureImageFromCamera(){
+
+    private fun captureImageFromCamera() {
         val pickImageIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(pickImageIntent, Utils.REQUEST_IMAGE_CAPTURE)
 
@@ -149,6 +157,7 @@ class SettingFragment : Fragment() {
 
                     uploadImageToFirebaseStorage(imageBitmap)
                 }
+
                 Utils.REQUEST_IMAGE_PICK -> {
                     val imageUri = data?.data
                     val imageBitmap =
@@ -190,7 +199,7 @@ class SettingFragment : Fragment() {
         }
     }
 
-    private fun changeToolbarItemsVisibility(){
+    private fun changeToolbarItemsVisibility() {
         imgUserProfile.visibility = View.GONE
         tvToolbarUsername.visibility = View.VISIBLE
         tvToolbarStatus.visibility = View.GONE
@@ -198,13 +207,13 @@ class SettingFragment : Fragment() {
         tvToolbarTitle.visibility = View.GONE
     }
 
-    private fun setToolbarData(){
+    private fun setToolbarData() {
         tvToolbarUsername.text = "Settings"
     }
 
     override fun onResume() {
         super.onResume()
-        settingViewModel.imageUrl.observe(viewLifecycleOwner, Observer{
+        settingViewModel.imageUrl.observe(viewLifecycleOwner, Observer {
             loadImage(it)
         })
     }
