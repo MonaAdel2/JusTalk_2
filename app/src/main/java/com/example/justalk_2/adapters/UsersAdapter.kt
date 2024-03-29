@@ -1,5 +1,6 @@
 package com.example.justalk_2.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +30,8 @@ class UsersAdapter : RecyclerView.Adapter<UserHolder>() {
     override fun onBindViewHolder(holder: UserHolder, position: Int) {
         val users = listOfUsers[position]
         val name = users.username!!.split("\\s".toRegex())[0]
-        holder.ProfileName.text = name
+        holder.profileName.text = name
+        Log.d("image->", "onBindViewHolder: ${name}")
 
         if (users.status.equals("Online")) {
             holder.statusImageView.setImageResource(R.drawable.onlinestatus)
@@ -40,8 +42,10 @@ class UsersAdapter : RecyclerView.Adapter<UserHolder>() {
 
         Glide.with(holder.itemView.context)
             .load(users.imageUrl)
+            .placeholder(R.drawable.person_icon)
             .into(holder.imageProfile)
 
+        Log.d("image->", "onBindViewHolder: ${users.imageUrl}")
         holder.itemView.setOnClickListener {
             listener?.onUserSelected(position, users)
         }
@@ -59,7 +63,7 @@ class UsersAdapter : RecyclerView.Adapter<UserHolder>() {
 }
 
 class UserHolder(row: View) : RecyclerView.ViewHolder(row) {
-    val ProfileName: TextView = row.findViewById(R.id.userName)
+    val profileName: TextView = row.findViewById(R.id.userName)
     val imageProfile: CircleImageView = row.findViewById(R.id.imageViewUser)
     val statusImageView: ImageView = row.findViewById(R.id.statusOnline)
 

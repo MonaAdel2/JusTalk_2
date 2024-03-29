@@ -36,11 +36,7 @@ class RecentChatsAdapter : RecyclerView.Adapter<RecentChatsViewHolder>() {
         val firstName = fullName?.split(" ")?.get(0)
 
         holder.tvFriendName.text = recentChatsList.name
-
-        // to display only a few words of the message.
-        val messagePart = recentChatsList.message!!.split(" ").take(4).joinToString(" ")
-        val makeLastMessage = "${firstName}: ${messagePart} "
-        holder.tvMessage.text = makeLastMessage
+        holder.tvMessage.text = "${firstName}:${recentChatsList.message!!}"
 
         Glide.with(holder.itemView.context).load(recentChatsList.friendsImage)
             .placeholder(R.drawable.person_icon).into(holder.imgFriend)

@@ -17,7 +17,7 @@ private const val CHANNEL_Id = "my_channel"
 
 class NotificationReplay : BroadcastReceiver() {
 
-    val firestore = FirebaseFirestore.getInstance()
+    private val fireStore = FirebaseFirestore.getInstance()
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -41,7 +41,7 @@ class NotificationReplay : BroadcastReceiver() {
             )
 
             // for chat room
-            firestore.collection("Messages").document(chatRoomId!!)
+            fireStore.collection("Messages").document(chatRoomId!!)
                 .collection("Chats").document(Utils.getTime())
                 .set(hashMap)
 
@@ -55,7 +55,7 @@ class NotificationReplay : BroadcastReceiver() {
                 "name" to friendName!!,
                 "person" to "you"
             )
-            firestore.collection("Conversation${Utils.getUidLoggedIn()}").document(friendId)
+            fireStore.collection("Conversation${Utils.getUidLoggedIn()}").document(friendId)
                 .set(hashmapForRecent)
 
             val updatedHashMap = hashMapOf<String, Any>(
@@ -64,7 +64,7 @@ class NotificationReplay : BroadcastReceiver() {
                 "person" to friendName
             )
 
-            firestore.collection("Conversation${Utils.getUidLoggedIn()}").document(friendId)
+            fireStore.collection("Conversation${Utils.getUidLoggedIn()}").document(friendId)
                 .set(updatedHashMap)
 
 

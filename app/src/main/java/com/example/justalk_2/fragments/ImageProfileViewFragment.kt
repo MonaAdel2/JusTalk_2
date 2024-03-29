@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.justalk_2.MainActivity
+import com.example.justalk_2.activities.MainActivity
 import com.example.justalk_2.R
 import com.example.justalk_2.databinding.FragmentImageProfileViewBinding
 import com.example.justalk_2.mvvm.ChatAppViewModel

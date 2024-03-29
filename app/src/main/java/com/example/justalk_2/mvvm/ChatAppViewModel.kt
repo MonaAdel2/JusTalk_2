@@ -12,11 +12,13 @@ import com.example.justalk_2.Utils
 import com.example.justalk_2.model.Message
 import com.example.justalk_2.model.RecentChats
 import com.example.justalk_2.model.User
+import com.example.justalk_2.notifications.FirebaseServices
 import com.example.justalk_2.notifications.entity.NotificationData
 import com.example.justalk_2.notifications.entity.PushNotification
 import com.example.justalk_2.notifications.entity.Token
 import com.example.justalk_2.notifications.network.RetrofitInstance
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -28,6 +30,8 @@ class ChatAppViewModel : ViewModel() {
 
     private val firestore = FirebaseFirestore.getInstance()
 
+//    var notificationListener: ListenerRegistration? = null
+
     val usersRepo = UsersRepo()
     val messageRepo = MessageRepo()
     val recentChatRepo = ChatListRepo()
@@ -37,6 +41,10 @@ class ChatAppViewModel : ViewModel() {
         getCurrentUser()
         getRecentChat()
     }
+    companion object{
+        var notificationListener: ListenerRegistration? = null
+    }
+
 
     fun getUsers(): LiveData<List<User>> {
         return usersRepo.getUsers()
@@ -56,6 +64,7 @@ class ChatAppViewModel : ViewModel() {
 
                     val sharedPrefs = SharedPrefs(context)
                     sharedPrefs.setValue("username", user.username)
+                    Log.d(TAG, "getCurrentUser: the current user from the shared prefs ${sharedPrefs.getValue("username")}")
                 }
 
             }
@@ -83,6 +92,7 @@ class ChatAppViewModel : ViewModel() {
             mySharedPrefs.setValue("friendImage", friendImage)
 
 
+            // Messages -> [sender, receiver] -> chats -> every single message
             val tempMessage = message.value!!
             firestore.collection("Messages").document(uniqueID.toString())
                 .collection("Chats").document(Utils.getTime())
@@ -115,8 +125,6 @@ class ChatAppViewModel : ViewModel() {
                             )
                             if (documentSnapshot.exists()) {
                                 // Document exists, perform the update
-                                Log.d(TAG, "sendMessage: inside if condition of exists()")
-                                Log.d(TAG, "sendMessage: in if ${message.value!!}")
                                 firestore.collection("Conversation${receiver}")
                                     .document(Utils.getUidLoggedIn())
                                     .update(
@@ -127,8 +135,7 @@ class ChatAppViewModel : ViewModel() {
 
                             } else {
                                 // Document does not exist, create it first
-                                Log.d(TAG, "sendMessage: inside else ")
-                                Log.d(TAG, "sendMessage: in else ${message.value!!}")
+                                Log.d(TAG, "sendMessage: the message is: ${message.value!!}")
                                 val data = hashMapOf(
                                     "friendId" to Utils.getUidLoggedIn(),
                                     "time" to Utils.getTime(),
@@ -146,29 +153,68 @@ class ChatAppViewModel : ViewModel() {
                         }
 
                     // for notification
+//                    firestore.collection("Tokens").document(receiver)
+//                        .addSnapshotListener { value, error ->
+//                            if (value != null && value.exists()) {
+//                                val tokenObject = value.toObject(Token::class.java)
+//                                token = tokenObject?.token!!
+//                                Log.d(TAG, "sendMessage: the token is ${token}")
+//
+//                                val loggedUserName =
+//                                    mySharedPrefs.getValue("username")!!.split("\\s".toRegex())[0]
+//                                if (message.value!!.isNotEmpty() && receiver.isNotEmpty()) {
+//                                    PushNotification(
+//                                        NotificationData(
+//                                            loggedUserName,
+//                                            message.value!!
+//                                        ), token!!
+//                                    ).also {
+//                                        sendNotification(it)
+//                                        Log.d(TAG, "sendMessage: Notification sent")
+//                                    }
+//                                } else {
+//                                    Log.d(TAG, "sendMessage: No token, no notification")
+//                                    Log.d(TAG, "sendMessage: $token")
+//                                }
+//
+//                            }
+//
+//                            // to clear the edit text after pressing send
+//                            if (task.isSuccessful) {
+//                                message.value = ""
+//                            }
+//                        }
+
+
+
+                    // new code for notification
                     firestore.collection("Tokens").document(receiver)
                         .addSnapshotListener { value, error ->
                             if (value != null && value.exists()) {
                                 val tokenObject = value.toObject(Token::class.java)
-                                token = tokenObject?.token!!
+                                val recipientToken = tokenObject?.token
 
-                                val loggedUserName =
-                                    mySharedPrefs.getValue("username")!!.split("\\s".toRegex())[0]
-                                if (message.value!!.isNotEmpty() && receiver.isNotEmpty()) {
-                                    PushNotification(
-                                        NotificationData(
-                                            loggedUserName,
-                                            message.value!!
-                                        ), token!!
-                                    ).also {
-                                        sendNotification(it)
-                                        Log.d(TAG, "sendMessage: Notification sent")
+                                // Get sender's token
+                                val senderToken = FirebaseServices.token
+
+                                if (recipientToken != null && recipientToken != senderToken) {
+                                    val loggedUserName =
+                                        mySharedPrefs.getValue("username")!!.split("\\s".toRegex())[0]
+                                    if (message.value!!.isNotEmpty() && receiver.isNotEmpty()) {
+                                        PushNotification(
+                                            NotificationData(
+                                                loggedUserName,
+                                                message.value!!
+                                            ), recipientToken
+                                        ).also {
+                                            sendNotification(it)
+                                            Log.d(TAG, "sendMessage: Notification sent")
+                                        }
+                                    } else {
+                                        Log.d(TAG, "sendMessage: No token, no notification")
+                                        Log.d(TAG, "sendMessage: $token")
                                     }
-                                } else {
-                                    Log.d(TAG, "sendMessage: No token, no notification")
-                                    Log.d(TAG, "sendMessage: $token")
                                 }
-
                             }
 
                             // to clear the edit text after pressing send
@@ -176,6 +222,8 @@ class ChatAppViewModel : ViewModel() {
                                 message.value = ""
                             }
                         }
+
+
 
                 }
 

@@ -17,7 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.justalk_2.MainActivity
+import com.example.justalk_2.activities.MainActivity
 import com.example.justalk_2.R
 import com.example.justalk_2.Utils
 import com.example.justalk_2.adapters.MessageAdapter

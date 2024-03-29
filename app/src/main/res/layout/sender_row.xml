@@ -10,8 +10,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_user_item"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="3dp"
         android:src="@drawable/person_icon"
@@ -48,9 +48,12 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="5dp"
+                android:ellipsize="end"
                 android:lineSpacingExtra="5dp"
                 android:paddingHorizontal="2dp"
                 android:paddingVertical="2dp"
+                android:singleLine="false"
+                android:maxWidth="280dp"
                 android:text="The message will be displayed here\nThe message will be displayed here\nThe message will be displayed here\nThe message will be displayed here"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/tv_time_item"
@@ -75,8 +78,8 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_message_item" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.cardview.widget.CardView>

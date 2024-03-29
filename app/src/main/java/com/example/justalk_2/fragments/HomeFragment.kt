@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.justalk_2.MainActivity
+import com.example.justalk_2.activities.MainActivity
 import com.example.justalk_2.adapters.OnUserClickListener
 import com.example.justalk_2.adapters.RecentChatsAdapter
 import com.example.justalk_2.adapters.UsersAdapter
