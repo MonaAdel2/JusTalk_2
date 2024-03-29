@@ -24,7 +24,7 @@ class Utils {
         }
 
         fun getTime(): String {
-            val dateFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH)
             val currentTime = Date()
             return dateFormat.format(currentTime)
         }

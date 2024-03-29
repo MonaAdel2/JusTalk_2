@@ -1,4 +1,4 @@
-package com.example.justalk_2
+package com.example.justalk_2.activities
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.example.justalk_2.R
 
 class AuthActivity : AppCompatActivity() {
 

@@ -1,7 +1,8 @@
-package com.example.justalk_2
+package com.example.justalk_2.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -13,6 +14,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
+import com.example.justalk_2.NavigationViewController
+import com.example.justalk_2.R
+import com.example.justalk_2.Utils
 import com.example.justalk_2.databinding.ActivityMainBinding
 import com.example.justalk_2.model.User
 import com.google.android.material.navigation.NavigationView
@@ -24,6 +28,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     NavigationViewController {
+
+    private val TAG = "MainActivity"
     private lateinit var navController: NavController
     lateinit var drawerLayout: DrawerLayout
     lateinit var toolbar: Toolbar
@@ -145,6 +151,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun logout() {
+        FirebaseMessaging.getInstance().deleteToken().addOnSuccessListener {
+            Log.d(TAG, "logout: the token is deleted")
+        }
+
         auth.signOut()
         startActivity(Intent(this, AuthActivity::class.java))
         finish()
@@ -171,7 +181,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val hashmap = hashMapOf<String, Any>("token" to token)
                 firestore.collection("Tokens").document(Utils.getUidLoggedIn()).set(hashmap)
                     .addOnSuccessListener {
-
+                        Log.d(TAG, "generateToken: the token is generated successfully.")
+                    }.addOnFailureListener {
+                        Log.d(TAG, "generateToken: unable to generate the token")
                     }
 
             }

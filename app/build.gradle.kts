@@ -73,7 +73,7 @@ dependencies {
     implementation ("com.etebarian:meow-bottom-navigation:1.2.0")
 
     // image loader
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("com.github.bumptech.glide:glide:4.14.2")
 
     //  Firebase
     implementation("com.google.firebase:firebase-analytics-ktx")
@@ -87,5 +87,9 @@ dependencies {
 
     // splash screen
     implementation("androidx.core:core-splashscreen:1.0.0")
+
+    // image cropper
+    implementation ("androidx.activity:activity-ktx:1.2.0-alpha06")
+    api ("com.theartofdev.edmodo:android-image-cropper:2.8.0")
 
 }

@@ -1,9 +1,12 @@
 package com.example.justalk_2.fragments
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -11,22 +14,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.example.justalk_2.AuthActivity
-import com.example.justalk_2.MainActivity
+import com.example.justalk_2.activities.AuthActivity
+import com.example.justalk_2.activities.MainActivity
 import com.example.justalk_2.databinding.FragmentSignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.theartofdev.edmodo.cropper.CropImage
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 
 
 class SignUpFragment : Fragment() {
+
+    //  for crop images
+    private lateinit var cropImageLauncher: ActivityResultLauncher<Any?>
+
+    private val cropActivityContract = object : ActivityResultContract<Any?, Uri?>(){
+        override fun createIntent(context: Context, input: Any?): Intent {
+            return CropImage.activity().setAspectRatio(1, 1)
+                .getIntent(requireActivity())
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            return CropImage.getActivityResult(intent)?.uri
+
+        }
+    }
 
     private val TAG = "SignUpFragment"
     private var _binding: FragmentSignUpBinding? = null
@@ -53,6 +75,7 @@ class SignUpFragment : Fragment() {
         return view
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated: beginning of sign up frg")
@@ -92,25 +115,37 @@ class SignUpFragment : Fragment() {
             }
         }
 
-        binding.btnUploadImgRegister.setOnClickListener {
-            Log.d(TAG, "onViewCreated: image upload button pressed")
-            val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Choose your profile picture")
-            builder.setItems(options) { dialog, item ->
-                when {
-                    options[item] == "Take Photo" -> {
-                        captureImageFromCamera()
-                    }
+        cropImageLauncher = registerForActivityResult(cropActivityContract){
+            it?.let { uri ->
+                binding.btnUploadImgRegister.setImageURI(uri)
+                val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
+                val bitmap = ImageDecoder.decodeBitmap(source)
+                uploadImageToFirebaseStorage(bitmap){
 
-                    options[item] == "Choose from Gallery" -> {
-                        pickImageFromGallery()
-                    }
-
-                    options[item] == "Cancel" -> dialog.dismiss()
                 }
             }
-            builder.show()
+        }
+
+        binding.btnUploadImgRegister.setOnClickListener {
+            Log.d(TAG, "onViewCreated: image upload button pressed")
+            cropImageLauncher.launch(null)
+//            val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
+//            val builder = AlertDialog.Builder(requireContext())
+//            builder.setTitle("Choose your profile picture")
+//            builder.setItems(options) { dialog, item ->
+//                when {
+//                    options[item] == "Take Photo" -> {
+//                        captureImageFromCamera()
+//                    }
+//
+//                    options[item] == "Choose from Gallery" -> {
+//                        pickImageFromGallery()
+//                    }
+//
+//                    options[item] == "Cancel" -> dialog.dismiss()
+//                }
+//            }
+//            builder.show()
         }
     }
 
@@ -189,6 +224,8 @@ class SignUpFragment : Fragment() {
     private val requestImageCapture =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+                // navigate to resize image fragment and send the bitmap as args
+
                 val imageBitmap = result.data?.extras?.get("data") as Bitmap
                 uploadImageToFirebaseStorage(imageBitmap) { imageUrl ->
 

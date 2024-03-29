@@ -12,7 +12,7 @@ import android.text.Html
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
-import com.example.justalk_2.MainActivity
+import com.example.justalk_2.activities.MainActivity
 import com.example.justalk_2.R
 import com.example.justalk_2.SharedPrefs
 import com.google.firebase.messaging.FirebaseMessagingService

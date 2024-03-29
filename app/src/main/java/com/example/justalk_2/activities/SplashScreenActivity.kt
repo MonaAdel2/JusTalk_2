@@ -1,4 +1,4 @@
-package com.example.justalk_2
+package com.example.justalk_2.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,7 @@ import android.view.animation.AnimationSet
 import android.view.animation.ScaleAnimation
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.justalk_2.R
 
 class SplashScreenActivity : AppCompatActivity() {
 

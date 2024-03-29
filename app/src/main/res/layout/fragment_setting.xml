@@ -69,7 +69,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/update_profile_hint"
-                android:text="@={viewModel.name}" />
+                android:text="@={viewModel.name}"
+                android:imeOptions="actionDone"
+                android:maxLines="1"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 
