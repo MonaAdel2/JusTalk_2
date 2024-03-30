@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.justalk_2.activities.AuthActivity
@@ -29,6 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.theartofdev.edmodo.cropper.CropImage
+import me.shouheng.compress.Compress
+import me.shouheng.compress.concrete
+import me.shouheng.compress.strategy.config.ScaleMode
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 
@@ -118,7 +122,17 @@ class SignUpFragment : Fragment() {
         cropImageLauncher = registerForActivityResult(cropActivityContract){
             it?.let { uri ->
                 binding.btnUploadImgRegister.setImageURI(uri)
-                val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
+
+                val compressed_uri = Compress.with(requireContext(), uri)
+                    .setQuality(80)
+                    .concrete {
+                        withMaxWidth(850f)
+                        withMaxHeight(850f)
+                        withScaleMode(ScaleMode.SCALE_HEIGHT)
+                        withIgnoreIfSmaller(true)
+                    }.get()
+
+                val source = ImageDecoder.createSource(requireActivity().contentResolver, compressed_uri.toUri())
                 val bitmap = ImageDecoder.decodeBitmap(source)
                 uploadImageToFirebaseStorage(bitmap){
 

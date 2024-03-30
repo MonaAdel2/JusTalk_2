@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +36,12 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.theartofdev.edmodo.cropper.CropImage
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import me.shouheng.compress.Compress
+import me.shouheng.compress.concrete
+import me.shouheng.compress.strategy.config.ScaleMode
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 
@@ -127,9 +134,25 @@ class SettingFragment : Fragment() {
         cropImageLauncher = registerForActivityResult(cropActivityContract){
             it?.let { uri ->
                 binding.imgUserSettingsFrg.setImageURI(uri)
-                val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
-                val bitmap = ImageDecoder.decodeBitmap(source)
-                uploadImageToFirebaseStorage(bitmap)
+
+//                GlobalScope.launch {
+                    val compressed_uri = Compress.with(requireContext(), uri)
+                        .setQuality(80)
+                        .concrete {
+                            withMaxWidth(850f)
+                            withMaxHeight(850f)
+                            withScaleMode(ScaleMode.SCALE_HEIGHT)
+                            withIgnoreIfSmaller(true)
+                        }.get()
+//                        .get(Dispatchers.IO)
+
+                    val source = ImageDecoder.createSource(requireActivity().contentResolver, compressed_uri.toUri())
+                    val bitmap = ImageDecoder.decodeBitmap(source)
+                    uploadImageToFirebaseStorage(bitmap)
+//                }
+
+//                val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
+
             }
         }
         binding.imgUserSettingsFrg.setOnClickListener {

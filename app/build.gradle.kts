@@ -92,4 +92,7 @@ dependencies {
     implementation ("androidx.activity:activity-ktx:1.2.0-alpha06")
     api ("com.theartofdev.edmodo:android-image-cropper:2.8.0")
 
+    // image compressor
+    implementation("com.github.Shouheng88:compressor:1.6.0")
+
 }

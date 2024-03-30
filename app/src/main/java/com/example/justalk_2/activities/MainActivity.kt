@@ -1,6 +1,7 @@
 package com.example.justalk_2.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -43,6 +44,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var imgProfile: CircleImageView
     lateinit var viewShaded: View
     private var token = ""
+
+    private val REQUEST_CODE = 11
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
