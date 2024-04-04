@@ -85,6 +85,19 @@
             app:layout_constraintEnd_toEndOf="@+id/et_new_username_settings_frg"
             app:layout_constraintTop_toBottomOf="@+id/et_new_username_settings_frg" />
 
+        <ProgressBar
+            android:id="@+id/progressBar_setting"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="110dp"
+            android:progressTint="@color/black"
+            android:progressTintMode="src_over"
+            android:translationZ="50dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_new_username_settings_frg" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

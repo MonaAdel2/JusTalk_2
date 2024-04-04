@@ -132,6 +132,7 @@ class SettingFragment : Fragment() {
         })
 
         cropImageLauncher = registerForActivityResult(cropActivityContract){
+            binding.progressBarSetting.visibility = View.VISIBLE
             it?.let { uri ->
                 binding.imgUserSettingsFrg.setImageURI(uri)
 
@@ -250,9 +251,10 @@ class SettingFragment : Fragment() {
                 settingViewModel.imageUrl.value = uri.toString()
 
             }
-
+            binding.progressBarSetting.visibility = View.GONE
             Toast.makeText(context, "Image uploaded successfully!", Toast.LENGTH_SHORT).show()
         }.addOnFailureListener {
+            binding.progressBarSetting.visibility = View.GONE
             Toast.makeText(context, "Failed to upload image!", Toast.LENGTH_SHORT).show()
         }
     }
