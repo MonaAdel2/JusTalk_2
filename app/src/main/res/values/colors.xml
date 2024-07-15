@@ -16,6 +16,8 @@
     <color name="button_color">#008891</color>
     <color name="button_trasparent">#1B008891</color>
 
+    <color name="edit_text">#ffffff</color>
+
     <color name="online_status">#01FF74</color>
     <color name="offline_status">#BDBDBD</color>
 
@@ -23,4 +25,6 @@
     <color name="results">#FF7777</color>
 
 
+
+    <color name="edit_text">#ffffff</color>
 </resources>
