@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Friend Name"
-        android:textColor="@color/black"
+        android:textColor="@color/main_text_color"
         android:textSize="@dimen/headline3"
         android:fontFamily="@font/roboto_medium"
         app:layout_constraintEnd_toStartOf="@+id/tv_time_recent_chat_item"

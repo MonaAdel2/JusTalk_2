@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:text="User name"
         android:id="@+id/userName"
-        android:textColor="@color/black"
+        android:textColor="@color/main_text_color"
         android:fontFamily="@font/roboto_medium"
         android:layout_below="@id/statusOnline"
         android:layout_centerHorizontal="true"

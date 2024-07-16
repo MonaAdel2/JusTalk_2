@@ -9,4 +9,10 @@
         android:id="@+id/action_logout"
         android:title="@string/menu_logout"
         android:icon="@drawable/logout_icon"/>
+
+    <item
+        android:id="@+id/action_dark_mode"
+        android:title="@string/switch_mode"
+        android:icon="@drawable/logout_icon">
+    </item>
 </menu>

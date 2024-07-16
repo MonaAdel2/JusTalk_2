@@ -45,4 +45,5 @@
     <!--  message hint -->
     <string name="message_hint">Type your message...</string>
     <string name="update_profile_hint">Enter your new username...</string>
+    <string name="switch_mode">Dark Mode</string>
 </resources>

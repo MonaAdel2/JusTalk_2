@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="@+id/img_user_item"
         app:layout_constraintVertical_bias="0.0"
         android:elevation="@dimen/elevation"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/background_message"
         app:cardCornerRadius="20dp"
         >
 

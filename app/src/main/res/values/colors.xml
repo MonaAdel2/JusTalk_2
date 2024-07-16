@@ -23,8 +23,6 @@
 
 
     <color name="results">#FF7777</color>
+    <color name="background_message">#FFFFFF</color>
 
-
-
-    <color name="edit_text">#ffffff</color>
 </resources>

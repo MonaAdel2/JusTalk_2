@@ -49,7 +49,7 @@
             android:elevation="@dimen/elevation"
             android:textColorHint="@color/primary_color"
             android:theme="@style/EditTextThemeOverlay"
-            app:boxBackgroundColor="@color/white"
+            app:boxBackgroundColor="@color/edit_text"
             app:boxCornerRadiusBottomEnd="@dimen/corner_radius_messgae"
             app:boxCornerRadiusBottomStart="@dimen/corner_radius_messgae"
             app:boxCornerRadiusTopEnd="@dimen/corner_radius_messgae"
@@ -63,7 +63,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_update_profile_settings_frg"
             app:layout_constraintTop_toBottomOf="@+id/tv_update_profile_settings_frg"
-            app:startIconTint="@color/hint_text_color">
+            app:startIconTint="@color/hint_text_color"
+            android:hint="@string/username_hint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -82,6 +83,7 @@
             android:layout_marginTop="24dp"
             android:layout_weight="0.1"
             android:text="Update"
+            style="@style/button"
             app:layout_constraintEnd_toEndOf="@+id/et_new_username_settings_frg"
             app:layout_constraintTop_toBottomOf="@+id/et_new_username_settings_frg" />
 
@@ -97,6 +99,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_new_username_settings_frg" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

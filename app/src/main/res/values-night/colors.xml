@@ -14,5 +14,6 @@
     <color name="button_trasparent">#9080D4DC</color>
 
     <color name="edit_text">#002223</color>
+    <color name="background_message">#10292C</color>
 
 </resources>
