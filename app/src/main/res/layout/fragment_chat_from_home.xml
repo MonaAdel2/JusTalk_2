@@ -52,7 +52,7 @@
                 android:elevation="@dimen/elevation"
                 android:textColorHint="@color/primary_color"
                 android:theme="@style/EditTextThemeOverlay"
-                app:boxBackgroundColor="@color/white"
+                app:boxBackgroundColor="@color/edit_text"
                 app:boxCornerRadiusBottomEnd="@dimen/corner_radius_messgae"
                 app:boxCornerRadiusBottomStart="@dimen/corner_radius_messgae"
                 app:boxCornerRadiusTopEnd="@dimen/corner_radius_messgae"
@@ -79,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="Send"
+                style="@style/button"
                 android:layout_weight="0.1"/>
 
         </LinearLayout>

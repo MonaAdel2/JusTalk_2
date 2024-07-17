@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SplashScreenActivity">
+    tools:context=".activities.SplashScreenActivity"
+    android:background="@color/background_color">
 
 
     <ImageView
@@ -19,17 +20,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.325" />
 
-<!--    <ImageView-->
-<!--        android:id="@+id/img_logo"-->
-<!--        android:layout_width="272dp"-->
-<!--        android:layout_height="275dp"-->
-<!--        android:src="@drawable/anim_vector_drawable"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.501"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.325" />-->
 
     <ImageView
         android:id="@+id/img_app_name_splash"
