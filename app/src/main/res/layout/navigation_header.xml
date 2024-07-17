@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="User Name"
+        android:text=""
         android:textSize="@dimen/headline1"
         android:textColor="@color/main_text_color"
         android:fontFamily="@font/roboto_medium"

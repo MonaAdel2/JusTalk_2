@@ -31,7 +31,8 @@
         android:checked="false"
         android:thumb="@drawable/circle"
         app:thumbTint="@color/white"
-        app:trackTint="@color/primary_color"
+        app:track="@drawable/bg_track"
+        app:useMaterialThemeColors="false"
         style="@style/Theme.App"/>
 
 
