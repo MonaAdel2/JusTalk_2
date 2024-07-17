@@ -1,6 +1,7 @@
 package com.example.justalk_2.activities
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,12 +11,14 @@ import android.view.animation.AnimationSet
 import android.view.animation.ScaleAnimation
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.justalk_2.R
 
 class SplashScreenActivity : AppCompatActivity() {
 
     lateinit var imgLogo: ImageView
     lateinit var imgLogoText: ImageView
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +63,12 @@ class SplashScreenActivity : AppCompatActivity() {
             finish()
 
         }, 2000)
+
+        sharedPreferences = getSharedPreferences("modes", MODE_PRIVATE)
+        var isDarkMode = sharedPreferences.getBoolean("dark_mode", false)
+        if (isDarkMode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
 
     }
 }
