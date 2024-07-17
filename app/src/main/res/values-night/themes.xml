@@ -10,4 +10,17 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="Theme.App" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="switchStyle">@style/Widget.App.Switch</item>
+    </style>
+
+    <style name="Widget.App.Switch" parent="Widget.Material3.CompoundButton.Switch">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Switch" parent="">
+        <item name="colorPrimaryContainer">@color/primary_color</item>
+        <item name="colorPrimary">@color/hint_text_color</item>
+    </style>
+
 </resources>
