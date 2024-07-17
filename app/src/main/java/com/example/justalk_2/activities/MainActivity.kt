@@ -1,13 +1,18 @@
 package com.example.justalk_2.activities
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
+import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -41,11 +46,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var tvUsername: TextView
     private var username: String? = null
     lateinit var imgProfile: CircleImageView
+    lateinit var themeSwitch: SwitchCompat
     lateinit var viewShaded: View
     private var token = ""
+    private var isDarkMode = false
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -66,6 +76,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         header = navigationView.inflateHeaderView(R.layout.navigation_header)
         tvUsername = header.findViewById<TextView>(R.id.tv_username_header)
         imgProfile = header.findViewById<CircleImageView>(R.id.img_profile_header)
+        themeSwitch = header.findViewById<SwitchCompat>(R.id.switch_mode_btn)
+
+        // Load saved theme preference
+        sharedPreferences = getSharedPreferences("modes", MODE_PRIVATE)
+        isDarkMode = sharedPreferences.getBoolean("dark_mode", false)
+        if (isDarkMode){
+            themeSwitch.isChecked = true
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
 
         var navHostFragment =
             supportFragmentManager.findFragmentById(R.id.frg_contanier_app) as NavHostFragment
@@ -80,7 +99,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             openImageProfile()
         }
 
+        themeSwitch.setOnClickListener {
+            switchMode()
+        }
+
+
     }
+
+
 
     private fun addUserDataToNavigationDrawer() {
         firestore.collection("Users").addSnapshotListener { snapshot, exception ->
@@ -161,6 +187,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun goToSettings() {
         navController.navigate(R.id.settingFragment)
+    }
+
+    private fun switchMode(){
+        if(themeSwitch.isChecked){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            sharedPreferences.edit().putBoolean("dark_mode", true).apply()
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            sharedPreferences.edit().putBoolean("dark_mode", false).apply()
+        }
     }
 
     override fun setDrawerLocked() {

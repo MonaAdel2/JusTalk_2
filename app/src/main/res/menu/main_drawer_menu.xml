@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_setting"
         android:title="@string/menu_settings"
         android:icon="@drawable/settings_icon"/>
+
+
+<!--    <item-->
+<!--        android:id="@+id/action_dark_mode"-->
+<!--        android:title="@string/switch_mode"-->
+<!--        android:icon="@drawable/baseline_dark_mode_24"-->
+<!--        android:actionLayout="@layout/switch_mode_toggle">-->
+
+<!--    </item>-->
+
 
     <item
         android:id="@+id/action_logout"
         android:title="@string/menu_logout"
         android:icon="@drawable/logout_icon"/>
 
-    <item
-        android:id="@+id/action_dark_mode"
-        android:title="@string/switch_mode"
-        android:icon="@drawable/logout_icon">
-    </item>
+
 </menu>
